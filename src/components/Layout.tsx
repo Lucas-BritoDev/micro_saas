@@ -16,7 +16,7 @@ export function Layout({ children }: LayoutProps) {
   const shouldShowSidebar = !isProfilePage;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex w-full">
+    <div className="h-screen bg-gray-50 flex w-full overflow-hidden">
       {shouldShowSidebar && (
         <AppSidebar 
           isCollapsed={sidebarCollapsed} 
@@ -24,7 +24,7 @@ export function Layout({ children }: LayoutProps) {
         />
       )}
       <main className={cn(
-        "flex-1 transition-all duration-300",
+        "flex-1 transition-all duration-300 overflow-y-auto",
         "p-4 md:p-6",
         shouldShowSidebar ? "pt-16 md:pt-6" : "pt-4 md:pt-6"
       )}>

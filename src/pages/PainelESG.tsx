@@ -304,9 +304,9 @@ export default function PainelESG() {
                     {goal.description && (
                       <p className="text-sm text-gray-600 mt-1">{goal.description}</p>
                     )}
-                    {goal.deadline && (
+                    {goal.target_date && (
                       <p className="text-xs text-gray-500 mt-1">
-                        Prazo: {new Date(goal.deadline).toLocaleDateString('pt-BR')}
+                        Prazo: {new Date(goal.target_date).toLocaleDateString('pt-BR')}
                       </p>
                     )}
                   </div>
@@ -315,50 +315,15 @@ export default function PainelESG() {
                   </Button>
                 </div>
                 
-                {/* Scores ESG */}
-                <div className="grid grid-cols-3 gap-2 text-xs">
+                {/* Informação básica da meta */}
+                <div className="bg-blue-50 border border-blue-200 rounded p-3">
                   <div className="text-center">
-                    <div className="flex items-center justify-center gap-1 mb-1">
-                      <Leaf className="h-3 w-3 text-green-600" />
-                      <span className="font-medium">E</span>
+                    <div className="text-sm text-blue-600 mb-1">Meta ESG</div>
+                    <div className="text-lg font-bold text-blue-800">
+                      {goal.title || 'Melhorar Sustentabilidade'}
                     </div>
-                    <div className="bg-green-100 rounded p-1">
-                      <div className="text-green-800 font-semibold">
-                        {goal.target_environmental || goal.current_environmental || 0}
-                      </div>
-                      {goal.improvement_environmental > 0 && (
-                        <div className="text-green-600">+{goal.improvement_environmental}%</div>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="flex items-center justify-center gap-1 mb-1">
-                      <Users className="h-3 w-3 text-blue-600" />
-                      <span className="font-medium">S</span>
-                    </div>
-                    <div className="bg-blue-100 rounded p-1">
-                      <div className="text-blue-800 font-semibold">
-                        {goal.target_social || goal.current_social || 0}
-                      </div>
-                      {goal.improvement_social > 0 && (
-                        <div className="text-blue-600">+{goal.improvement_social}%</div>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="flex items-center justify-center gap-1 mb-1">
-                      <Shield className="h-3 w-3 text-purple-600" />
-                      <span className="font-medium">G</span>
-                    </div>
-                    <div className="bg-purple-100 rounded p-1">
-                      <div className="text-purple-800 font-semibold">
-                        {goal.target_governance || goal.current_governance || 0}
-                      </div>
-                      {goal.improvement_governance > 0 && (
-                        <div className="text-purple-600">+{goal.improvement_governance}%</div>
-                      )}
+                    <div className="text-xs text-blue-600 mt-1">
+                      Criada em {new Date(goal.created_at).toLocaleDateString('pt-BR')}
                     </div>
                   </div>
                 </div>
@@ -373,12 +338,13 @@ export default function PainelESG() {
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-gray-500">Progresso: {goal.progress || 0}%</span>
                   <span className={`px-2 py-1 rounded-full text-xs ${
-                    goal.status === 'completed' ? 'bg-green-100 text-green-800' :
-                    goal.status === 'overdue' ? 'bg-red-100 text-red-800' :
+                    goal.status === 'concluída' ? 'bg-green-100 text-green-800' :
+                    goal.status === 'atrasada' ? 'bg-red-100 text-red-800' :
                     'bg-blue-100 text-blue-800'
                   }`}>
-                    {goal.status === 'completed' ? 'Concluída' :
-                     goal.status === 'overdue' ? 'Atrasada' :
+                    {goal.status === 'concluída' ? 'Concluída' :
+                     goal.status === 'atrasada' ? 'Atrasada' :
+                     goal.status === 'em_andamento' ? 'Em Andamento' :
                      'Ativa'}
                   </span>
                 </div>
@@ -386,10 +352,7 @@ export default function PainelESG() {
             ))}
             {goals.length === 0 && (
               <div className="col-span-full text-center py-8">
-                <div className="text-gray-400 mb-2">Nenhuma meta cadastrada.</div>
-                <Button onClick={() => navigate('/nova-meta-esg')} size="sm">
-                  <Plus className="h-4 w-4 mr-1" /> Criar Primeira Meta
-                </Button>
+                <div className="text-gray-400">Nenhuma meta cadastrada.</div>
               </div>
             )}
           </div>
@@ -402,14 +365,6 @@ export default function PainelESG() {
           <DialogHeader>
             <DialogTitle>Calcular ESG</DialogTitle>
           </DialogHeader>
-          <div className="mb-4 text-xs text-gray-600 whitespace-pre-line">
-            Vários métodos e relatórios de ESG e sustentabilidade estão disponíveis para as empresas, e uma crítica em torno desses métodos reside no princípio da autodeclaração, ou seja, as empresas podem escolher os indicadores ESG que serão divulgados, podendo gerar inconsistência e falta de objetividade. Com essa ressalva, destacamos quais os são norteadores importantes.
-
-GRI 
-O método mais conhecido e utilizado para relatórios de sustentabilidade é o GRI Standards, da Global Reporting Initiative.
-
-Desde 2018, as normas GRI compilam dados para a divulgação pública de informações ESG e seus impactos econômicos, ambientais e sociais. Muitos pesquisadores e estudiosos do tema da sustentabilidade nas micro e pequenas empresas colocam que este método não atende plenamente às especificidades das MPE's, sendo mais voltados para as grandes corporações. 
-          </div>
           <form onSubmit={handleEsgFormSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>

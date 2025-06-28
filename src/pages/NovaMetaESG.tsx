@@ -73,24 +73,18 @@ export default function NovaMetaESG() {
       const metaData = {
         user_id: user.id,
         title: metaForm.title || 'Meta ESG Geral',
-        current_environmental: currentScores.environmental,
-        current_social: currentScores.social,
-        current_governance: currentScores.governance,
-        target_environmental: targetEnvironmental,
-        target_social: targetSocial,
-        target_governance: targetGovernance,
-        improvement_environmental: parseFloat(metaForm.environmental) || 0,
-        improvement_social: parseFloat(metaForm.social) || 0,
-        improvement_governance: parseFloat(metaForm.governance) || 0,
-        deadline: metaForm.deadline || null,
         description: metaForm.description || '',
-        created_at: new Date().toISOString(),
-        status: 'active'
+        progress: 0,
+        status: 'em_andamento',
+        color: '#3B82F6',
+        target_date: metaForm.deadline || null,
+        created_at: new Date().toISOString()
       };
 
       const { error } = await supabase.from('esg_goals').insert(metaData);
 
       if (error) {
+        console.error('Erro detalhado:', error);
         throw error;
       }
 
@@ -98,7 +92,7 @@ export default function NovaMetaESG() {
       navigate('/painel-esg');
     } catch (error) {
       console.error('Erro ao criar meta:', error);
-      toast.error('Erro ao criar meta ESG');
+      toast.error('Erro ao criar meta ESG. Verifique se o banco foi atualizado.');
     } finally {
       setLoading(false);
     }
