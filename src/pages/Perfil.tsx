@@ -256,39 +256,8 @@ export default function Perfil() {
 
   return (
     <div className="w-full max-w-3xl mx-auto px-2 sm:px-0 space-y-6">
-      {/* Header padronizado com botão lateral */}
-      <div className="relative flex items-center pt-6 pb-2">
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-8 w-8 p-0 border-2 border-blue-400 bg-blue-50 hover:bg-blue-100 shadow mr-3"
-          style={{ boxShadow: '0 2px 8px 0 rgba(56, 189, 248, 0.10)' }}
-          onClick={() => setDrawerOpen(true)}
-        >
-          <Menu className="h-4 w-4 text-blue-500" />
-        </Button>
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Meu Perfil</h1>
-      </div>
-      {/* Drawer lateral padronizado */}
-      {drawerOpen && (
-        <div className="fixed inset-0 z-50 flex">
-          <div className="bg-white w-64 h-full shadow-xl p-6 flex flex-col">
-            <button className="self-end mb-4 text-gray-500 text-2xl" onClick={() => setDrawerOpen(false)}>&times;</button>
-            <nav className="flex flex-col gap-4 mt-4">
-              <button onClick={() => {window.location.hash = '#/'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Dashboard</button>
-              <button onClick={() => {window.location.hash = '#/calculadora-imc'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Calculadora IMC</button>
-              <button onClick={() => {window.location.hash = '#/painel-esg'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Painel ESG</button>
-              <button onClick={() => {window.location.hash = '#/gestao-mtr'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Gestão MTR</button>
-              <button onClick={() => {window.location.hash = '#/financeiro'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Financeiro</button>
-              <button onClick={() => {window.location.hash = '#/suporte'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Suporte</button>
-              <button onClick={() => {window.location.hash = '#/perfil'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Meu Perfil</button>
-            </nav>
-          </div>
-          <div className="flex-1 bg-black bg-opacity-30" onClick={() => setDrawerOpen(false)}></div>
-        </div>
-      )}
+      <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-8">Meu Perfil</h1>
       <p className="text-gray-600 mb-2 ml-1">Gerencie suas informações pessoais e configurações</p>
-      {/* Tabs igual Suporte */}
       <Tabs value={tab} onValueChange={setTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-1 mb-4 bg-gray-50 rounded-xl shadow-sm">
           <TabsTrigger value="perfil" className="text-xs sm:text-sm py-2 px-1 sm:px-3">Perfil</TabsTrigger>
