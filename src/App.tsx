@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import CalculadoraIMC from "./pages/CalculadoraIMC";
 import GestaoMTR from "./pages/GestaoMTR";
 import PainelESG from "./pages/PainelESG";
+import NovaMetaESG from "./pages/NovaMetaESG";
 import Financeiro from "./pages/Financeiro";
 import Suporte from "./pages/Suporte";
 import Auth from "./pages/Auth";
@@ -35,6 +36,7 @@ const App = () => (
                     <Route path="/calculadora-imc" element={<CalculadoraIMC />} />
                     <Route path="/gestao-mtr" element={<GestaoMTR />} />
                     <Route path="/painel-esg" element={<PainelESG />} />
+                    <Route path="/nova-meta-esg" element={<NovaMetaESG />} />
                     <Route path="/financeiro" element={<Financeiro />} />
                     <Route path="/suporte" element={<Suporte />} />
                     <Route path="/perfil" element={<Perfil />} />

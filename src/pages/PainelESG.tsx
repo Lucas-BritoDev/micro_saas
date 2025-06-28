@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +22,7 @@ const WASTE_COLORS = ["#22c55e", "#2563eb", "#eab308", "#f97316", "#a21caf", "#0
 
 export default function PainelESG() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [esgScores, setEsgScores] = useState({ environmental: 0, social: 0, governance: 0 });
   const [esgHistory, setEsgHistory] = useState([]); // [{date, environmental, social, governance}]
@@ -28,8 +30,6 @@ export default function PainelESG() {
   const [goals, setGoals] = useState([]); // [{title, progress}]
   const [showEsgForm, setShowEsgForm] = useState(false);
   const [esgForm, setEsgForm] = useState({ environmental: '', social: '', governance: '', waste: [{ name: '', value: '' }] });
-  const [showGoalForm, setShowGoalForm] = useState(false);
-  const [goalForm, setGoalForm] = useState({ title: '', progress: '', e: '', s: '', g: '' });
   const [monthsFilter, setMonthsFilter] = useState(3);
   const [showScoreDialog, setShowScoreDialog] = useState(false);
   const [lastScore, setLastScore] = useState(null);
@@ -121,20 +121,6 @@ export default function PainelESG() {
     setShowEsgForm(false);
     fetchESGData();
     toast.success('ESG calculado e salvo!');
-  }
-
-  function handleGoalFormChange(e) {
-    setGoalForm({ ...goalForm, [e.target.name]: e.target.value });
-  }
-
-  async function handleGoalFormSubmit(e) {
-    e.preventDefault();
-    if (!user) return;
-    await supabase.from('esg_goals').insert({ user_id: user.id, title: goalForm.title, progress: Number(goalForm.progress), created_at: new Date().toISOString(), color: '' });
-    setShowGoalForm(false);
-    setGoalForm({ title: '', progress: '', e: '', s: '', g: '' });
-    fetchESGData();
-    toast.success('Meta adicionada!');
   }
 
   async function handleDeleteGoal(id) {
@@ -304,23 +290,108 @@ export default function PainelESG() {
           <div>
             <CardTitle>Metas ESG</CardTitle>
           </div>
-          <Button size="sm" onClick={() => setShowGoalForm(true)}><Plus className="h-4 w-4 mr-1" /> Nova Meta</Button>
+          <Button size="sm" onClick={() => navigate('/nova-meta-esg')}>
+            <Plus className="h-4 w-4 mr-1" /> Nova Meta
+          </Button>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {goals.map(goal => (
-              <div key={goal.id} className="bg-gray-50 rounded p-3 flex flex-col gap-2">
-                <div className="flex justify-between items-center">
-                  <span>{goal.title}</span>
-                  <Button size="sm" variant="destructive" onClick={() => handleDeleteGoal(goal.id)}>Excluir</Button>
+              <div key={goal.id} className="bg-gray-50 rounded p-4 flex flex-col gap-3">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900">{goal.title || 'Meta ESG'}</h4>
+                    {goal.description && (
+                      <p className="text-sm text-gray-600 mt-1">{goal.description}</p>
+                    )}
+                    {goal.deadline && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        Prazo: {new Date(goal.deadline).toLocaleDateString('pt-BR')}
+                      </p>
+                    )}
+                  </div>
+                  <Button size="sm" variant="destructive" onClick={() => handleDeleteGoal(goal.id)}>
+                    Excluir
+                  </Button>
                 </div>
+                
+                {/* Scores ESG */}
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 mb-1">
+                      <Leaf className="h-3 w-3 text-green-600" />
+                      <span className="font-medium">E</span>
+                    </div>
+                    <div className="bg-green-100 rounded p-1">
+                      <div className="text-green-800 font-semibold">
+                        {goal.target_environmental || goal.current_environmental || 0}
+                      </div>
+                      {goal.improvement_environmental > 0 && (
+                        <div className="text-green-600">+{goal.improvement_environmental}%</div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 mb-1">
+                      <Users className="h-3 w-3 text-blue-600" />
+                      <span className="font-medium">S</span>
+                    </div>
+                    <div className="bg-blue-100 rounded p-1">
+                      <div className="text-blue-800 font-semibold">
+                        {goal.target_social || goal.current_social || 0}
+                      </div>
+                      {goal.improvement_social > 0 && (
+                        <div className="text-blue-600">+{goal.improvement_social}%</div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 mb-1">
+                      <Shield className="h-3 w-3 text-purple-600" />
+                      <span className="font-medium">G</span>
+                    </div>
+                    <div className="bg-purple-100 rounded p-1">
+                      <div className="text-purple-800 font-semibold">
+                        {goal.target_governance || goal.current_governance || 0}
+                      </div>
+                      {goal.improvement_governance > 0 && (
+                        <div className="text-purple-600">+{goal.improvement_governance}%</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Progresso geral */}
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-green-500 h-2 rounded-full" style={{ width: `${goal.progress}%` }}></div>
+                  <div 
+                    className="bg-green-500 h-2 rounded-full transition-all duration-300" 
+                    style={{ width: `${goal.progress || 0}%` }}
+                  ></div>
                 </div>
-                <span className="text-xs text-gray-500">Progresso: {goal.progress}%</span>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-gray-500">Progresso: {goal.progress || 0}%</span>
+                  <span className={`px-2 py-1 rounded-full text-xs ${
+                    goal.status === 'completed' ? 'bg-green-100 text-green-800' :
+                    goal.status === 'overdue' ? 'bg-red-100 text-red-800' :
+                    'bg-blue-100 text-blue-800'
+                  }`}>
+                    {goal.status === 'completed' ? 'Concluída' :
+                     goal.status === 'overdue' ? 'Atrasada' :
+                     'Ativa'}
+                  </span>
+                </div>
               </div>
             ))}
-            {goals.length === 0 && <div className="text-gray-400">Nenhuma meta cadastrada.</div>}
+            {goals.length === 0 && (
+              <div className="col-span-full text-center py-8">
+                <div className="text-gray-400 mb-2">Nenhuma meta cadastrada.</div>
+                <Button onClick={() => navigate('/nova-meta-esg')} size="sm">
+                  <Plus className="h-4 w-4 mr-1" /> Criar Primeira Meta
+                </Button>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
