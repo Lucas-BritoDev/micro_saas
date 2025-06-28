@@ -700,6 +700,55 @@ export default function CalculadoraIMC() {
     }
   };
 
+  // No seu SaaS, você pode escutar o evento de autenticação
+  window.addEventListener('mobileAppAuth', function(event) {
+    const userData = event.detail;
+    console.log('Usuário autenticado via mobile:', userData);
+    // Faça login automático com os dados recebidos
+    // Seu código de autenticação aqui...
+  });
+
+  // Para solicitar logout do app
+  window.requestLogout = function() {
+    if (window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'LOGOUT_REQUEST' }));
+    }
+  };
+
+  // Para enviar dados para o app
+  window.sendToMobileApp = function(type, data) {
+    if (window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage(JSON.stringify({ type, data }));
+    }
+  };
+
+  // Adiciona suporte ao logout remoto via mensagem do app mobile
+  window.addEventListener('message', function(event) {
+    try {
+      const message = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+      if (message.type === 'LOGOUT') {
+        // Limpa dados locais
+        localStorage.clear();
+        sessionStorage.clear();
+        // Se usar Supabase Auth, faz logout também
+        if (window.supabase && window.supabase.auth) {
+          window.supabase.auth.signOut();
+        }
+        // Redireciona para tela de login
+        window.location.href = '/#/auth';
+        // Notifica o app que o logout foi feito
+        if (window.ReactNativeWebView) {
+          window.ReactNativeWebView.postMessage(JSON.stringify({
+            type: 'LOGOUT_SUCCESS',
+            data: { message: 'Logout realizado no SaaS' }
+          }));
+        }
+      }
+    } catch (e) {
+      // Ignora erros de parsing
+    }
+  });
+
   return (
     <div id="imc-main-container" className="space-y-6">
       {/* Header principal */}
