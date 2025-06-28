@@ -79,10 +79,10 @@ export function AppSidebar({ isCollapsed, onToggle }: AppSidebarProps) {
               </div>
             )}
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
               onClick={onToggle}
-              className="hidden lg:flex h-8 w-8 p-0"
+              className="hidden lg:flex h-8 w-8 p-0 border-2 border-blue-400 bg-blue-50 hover:bg-blue-100 shadow"
             >
               <Menu className="h-4 w-4" />
             </Button>

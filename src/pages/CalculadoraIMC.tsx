@@ -676,10 +676,6 @@ export default function CalculadoraIMC() {
       {/* Header principal */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
         <div>
-          <Button variant="outline" onClick={() => window.history.back()} className="mb-4 sm:mb-0">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar
-          </Button>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Calculadora IMC</h1>
           <p className="text-gray-600 mt-1">Índice de Maturidade de Construção</p>
         </div>

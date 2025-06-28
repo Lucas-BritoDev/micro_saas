@@ -203,9 +203,6 @@ export default function PainelESG() {
             <Download className="h-4 w-4 mr-2" />
             Exportar Relatório
           </Button>
-          <Button onClick={handleShowScore} className="w-full sm:w-auto bg-blue-600 text-white">
-            Score ESG
-          </Button>
           <Button onClick={() => setShowEsgForm(true)} className="w-full sm:w-auto">
             <Calculator className="h-4 w-4 mr-2" />
             Calcular ESG
@@ -305,7 +302,7 @@ export default function PainelESG() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle>Metas ESG 2024</CardTitle>
+            <CardTitle>Metas ESG</CardTitle>
           </div>
           <Button size="sm" onClick={() => setShowGoalForm(true)}><Plus className="h-4 w-4 mr-1" /> Nova Meta</Button>
         </CardHeader>
@@ -361,65 +358,14 @@ Desde 2018, as normas GRI compilam dados para a divulgação pública de informa
               <Label>Distribuição de Resíduos (%)</Label>
               {esgForm.waste.map((w, idx) => (
                 <div key={idx} className="flex gap-2 mb-2">
-                  <Input name={`waste-${idx}-name`} placeholder="Tipo (ex: Concreto)" value={w.name} onChange={e => handleEsgFormChange(e, idx)} required className="flex-1" />
-                  <Input name={`waste-${idx}-value`} placeholder="%" type="number" min={0} max={100} value={w.value} onChange={e => handleEsgFormChange(e, idx)} required className="w-20" />
+                  <Input name={`waste-${idx}-name`} value={w.name} onChange={(e) => handleEsgFormChange(e, idx)} />
+                  <Input name={`waste-${idx}-value`} type="number" min={0} max={100} value={w.value} onChange={(e) => handleEsgFormChange(e, idx)} />
                 </div>
               ))}
-              <Button type="button" size="sm" onClick={addWasteField}>Adicionar Tipo</Button>
+              <Button onClick={addWasteField} className="w-full mt-2">Adicionar Resíduo</Button>
             </div>
-            <div className="flex justify-end gap-2">
-              <Button variant="outline" type="button" onClick={() => setShowEsgForm(false)}>Cancelar</Button>
-              <Button type="submit" className="bg-green-600 text-white">Salvar ESG</Button>
-            </div>
+            <button type="submit" className="w-full bg-blue-600 text-white py-2">Calcular ESG</button>
           </form>
-        </DialogContent>
-      </Dialog>
-
-      {/* Formulário de Meta ESG */}
-      <Dialog open={showGoalForm} onOpenChange={setShowGoalForm}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Nova Meta ESG</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleGoalFormSubmit} className="space-y-4">
-            <div>
-              <Label>Título da Meta</Label>
-              <Input name="title" value={goalForm.title} onChange={handleGoalFormChange} required />
-            </div>
-            <div>
-              <Label>Progresso (%)</Label>
-              <Input name="progress" type="number" min={0} max={100} value={goalForm.progress} onChange={handleGoalFormChange} required />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <div>
-                <Label>Melhorar Ambiental (%)</Label>
-                <Input name="e" type="number" min={0} max={100} value={goalForm.e} onChange={handleGoalFormChange} required />
-              </div>
-              <div>
-                <Label>Melhorar Social (%)</Label>
-                <Input name="s" type="number" min={0} max={100} value={goalForm.s} onChange={handleGoalFormChange} required />
-              </div>
-              <div>
-                <Label>Melhorar Governança (%)</Label>
-                <Input name="g" type="number" min={0} max={100} value={goalForm.g} onChange={handleGoalFormChange} required />
-              </div>
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button variant="outline" type="button" onClick={() => setShowGoalForm(false)}>Cancelar</Button>
-              <Button type="submit" className="bg-green-600 text-white">Salvar Meta</Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
-
-      {/* Dialog Score ESG */}
-      <Dialog open={showScoreDialog} onOpenChange={setShowScoreDialog}>
-        <DialogContent className="max-w-xs">
-          <DialogHeader>
-            <DialogTitle>Score ESG</DialogTitle>
-          </DialogHeader>
-          <div className="text-center text-2xl font-bold py-4">{lastScore}</div>
-          <div className="text-center text-gray-500">Média dos 3 indicadores do último relatório ESG</div>
         </DialogContent>
       </Dialog>
     </div>

@@ -252,19 +252,17 @@ export default function Perfil() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex flex-col sm:flex-row sm:items-start">
       <AppSidebar isCollapsed={false} onToggle={() => {}} />
       <div className="flex-1 p-4 space-y-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Meu Perfil</h1>
-            <p className="text-gray-600 mt-1">Gerencie suas informações pessoais e configurações</p>
-          </div>
+        <div className="flex flex-col space-y-2 mb-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Meu Perfil</h1>
+          <p className="text-gray-600 mt-1">Gerencie suas informações pessoais e configurações</p>
         </div>
 
         <Tabs value={tab} onValueChange={setTab} className="w-full">
-          <TabsList className="mb-4 grid grid-cols-1 sm:grid-cols-5 w-full">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-2 mb-4">
             <TabsTrigger value="perfil">Perfil</TabsTrigger>
             <TabsTrigger value="seguranca">Segurança</TabsTrigger>
             <TabsTrigger value="notificacoes">Notificações</TabsTrigger>
