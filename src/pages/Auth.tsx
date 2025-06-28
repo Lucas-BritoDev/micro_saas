@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -222,7 +221,7 @@ export default function Auth() {
         <CardHeader className="text-center">
           <div className="mx-auto mb-4">
             <img 
-              src="/lovable-uploads/ebdcf78f-9818-495e-8fe2-e2e5de3bb26f.png" 
+              src={`${import.meta.env.BASE_URL}lovable-uploads/logo.png`} 
               alt="Canteiro Circular" 
               className="h-16 w-auto mx-auto"
             />

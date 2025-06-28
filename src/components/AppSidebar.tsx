@@ -69,7 +69,7 @@ export function AppSidebar({ isCollapsed, onToggle }: AppSidebarProps) {
             {!isCollapsed && (
               <div className="flex items-center space-x-2">
                 <img 
-                  src="/lovable-uploads/ebdcf78f-9818-495e-8fe2-e2e5de3bb26f.png" 
+                  src={`${import.meta.env.BASE_URL}lovable-uploads/logo.png`} 
                   alt="Canteiro Circular" 
                   className="h-8 w-8"
                 />
