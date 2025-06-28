@@ -440,13 +440,17 @@ export default function CalculadoraIMC() {
   const handleNextGroup = () => {
     if (currentGroup < questionGroups.length - 1) {
       setCurrentGroup(prev => prev + 1);
-      // Scroll para o topo do container ou da janela
-      const el = document.getElementById('imc-main-container');
-      if (el) {
-        el.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
+      // Força o scroll ao topo após a atualização do grupo
+      setTimeout(() => {
+        const el = document.getElementById('imc-main-container');
+        if (el) {
+          el.scrollTo({ top: 0, behavior: 'smooth' });
+        }
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+        // Fallback para navegadores antigos
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      }, 50);
     }
   };
   const handlePreviousGroup = () => {
