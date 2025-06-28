@@ -256,7 +256,7 @@ export default function Perfil() {
 
   return (
     <div className="w-full max-w-3xl mx-auto px-2 sm:px-0 space-y-6">
-      {/* Botão menu drawer padronizado */}
+      {/* Header padronizado com botão lateral */}
       <div className="relative flex items-center pt-6 pb-2">
         <Button
           variant="outline"
@@ -269,17 +269,18 @@ export default function Perfil() {
         </Button>
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Meu Perfil</h1>
       </div>
-      {/* Drawer lateral igual Suporte, agora usando window.location.hash */}
+      {/* Drawer lateral padronizado */}
       {drawerOpen && (
         <div className="fixed inset-0 z-50 flex">
           <div className="bg-white w-64 h-full shadow-xl p-6 flex flex-col">
             <button className="self-end mb-4 text-gray-500 text-2xl" onClick={() => setDrawerOpen(false)}>&times;</button>
             <nav className="flex flex-col gap-4 mt-4">
               <button onClick={() => {window.location.hash = '#/dashboard'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Dashboard</button>
-              <button onClick={() => {window.location.hash = '#/PainelESG'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Painel ESG</button>
-              <button onClick={() => {window.location.hash = '#/GestaoMTR'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Gestão MTR</button>
-              <button onClick={() => {window.location.hash = '#/Financeiro'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Financeiro</button>
-              <button onClick={() => {window.location.hash = '#/Suporte'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Suporte</button>
+              <button onClick={() => {window.location.hash = '#/calculadora-imc'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Calculadora IMC</button>
+              <button onClick={() => {window.location.hash = '#/painel-esg'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Painel ESG</button>
+              <button onClick={() => {window.location.hash = '#/gestao-mtr'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Gestão MTR</button>
+              <button onClick={() => {window.location.hash = '#/financeiro'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Financeiro</button>
+              <button onClick={() => {window.location.hash = '#/suporte'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Suporte</button>
               <button onClick={() => {window.location.hash = '#/perfil'; setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Meu Perfil</button>
             </nav>
           </div>
