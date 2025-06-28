@@ -22,5 +22,28 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      window.addEventListener('message', function(event) {
+        try {
+          var message = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+          if (message.type === 'LOGOUT') {
+            localStorage.clear();
+            sessionStorage.clear();
+            if (window.supabase && window.supabase.auth) {
+              window.supabase.auth.signOut();
+            }
+            window.location.href = '/#/auth';
+            if (window.ReactNativeWebView) {
+              window.ReactNativeWebView.postMessage(JSON.stringify({
+                type: 'LOGOUT_SUCCESS',
+                data: { message: 'Logout realizado no SaaS' }
+              }));
+            }
+          }
+        } catch (e) {
+          // Ignora erros de parsing
+        }
+      });
+    </script>
   </body>
 </html>
