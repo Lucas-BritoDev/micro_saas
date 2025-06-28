@@ -76,11 +76,8 @@ export const UserMenu: React.FC = () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 rounded-full border-2 border-blue-400 bg-blue-50 hover:bg-blue-100 shadow">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={profile?.avatar_url} alt={getDisplayName()} />
-              <AvatarFallback>{getInitials()}</AvatarFallback>
-            </Avatar>
+          <Button variant="ghost" className="relative h-8 w-8 border-2 border-blue-400 bg-blue-50 hover:bg-blue-100 shadow flex items-center justify-center p-0">
+            <span className="text-base font-bold text-blue-700 w-full h-full flex items-center justify-center">{getInitials()}</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
