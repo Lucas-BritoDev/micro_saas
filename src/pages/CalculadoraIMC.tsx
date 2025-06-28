@@ -440,15 +440,25 @@ export default function CalculadoraIMC() {
   const handleNextGroup = () => {
     if (currentGroup < questionGroups.length - 1) {
       setCurrentGroup(prev => prev + 1);
-      // Scroll para o topo da tela
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Scroll para o topo do container ou da janela
+      const el = document.getElementById('imc-main-container');
+      if (el) {
+        el.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   };
   const handlePreviousGroup = () => {
     if (currentGroup > 0) {
       setCurrentGroup(prev => prev - 1);
-      // Scroll para o topo da tela
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Scroll para o topo do container ou da janela
+      const el = document.getElementById('imc-main-container');
+      if (el) {
+        el.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   };
 
@@ -621,8 +631,13 @@ export default function CalculadoraIMC() {
     setCurrentGroup(0);
     setAnswers({});
     setAssessment(null);
-    // Scroll para o topo da tela
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Scroll para o topo do container ou da janela
+    const el = document.getElementById('imc-main-container');
+    if (el) {
+      el.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   // Novo: função para exportar relatório de avaliações do histórico
@@ -682,7 +697,7 @@ export default function CalculadoraIMC() {
   };
 
   return (
-    <div className="space-y-6">
+    <div id="imc-main-container" className="space-y-6">
       {/* Header principal */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
         <div>

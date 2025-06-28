@@ -9,6 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme, ThemeType } from '@/hooks/useTheme';
 
 export default function Perfil() {
   const { user } = useAuth();
@@ -35,12 +36,15 @@ export default function Perfil() {
   const [preferencias, setPreferencias] = useState({
     language: 'Português (Brasil)',
     timezone: 'Brasília (GMT-3)',
-    theme: 'Claro',
+    theme: (localStorage.getItem('theme') as ThemeType) || 'claro',
   });
   const [atividades, setAtividades] = useState<any[]>([]);
   const [senhaAtual, setSenhaAtual] = useState('');
   const [novaSenha, setNovaSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
+
+  // Aplica o tema ao carregar a página
+  useTheme(preferencias.theme as ThemeType);
 
   // Carregar dados do perfil ao abrir
   useEffect(() => {
@@ -206,7 +210,9 @@ export default function Perfil() {
       })
       .eq('id', user.id);
     if (!error) {
-      toast({ title: 'Preferências salvas', description: 'Suas preferências do sistema foram salvas.' });
+      localStorage.setItem('theme', preferencias.theme);
+      useTheme(preferencias.theme as ThemeType);
+      toast({ title: 'Preferências salvas', description: 'Suas preferências de uso foram salvas.' });
     } else {
       toast({ title: 'Erro ao salvar', description: error.message, variant: 'destructive' });
     }
@@ -398,9 +404,9 @@ export default function Perfil() {
             <CardContent>
               <form className="space-y-4" onSubmit={handleSalvarPreferencias}>
                 <div>
-                  <Label htmlFor="idioma">Idioma</Label>
+                  <Label htmlFor="language">Idioma</Label>
                   <select
-                    id="idioma"
+                    id="language"
                     name="language"
                     value={preferencias.language}
                     onChange={handlePreferenciasChange}
@@ -412,9 +418,9 @@ export default function Perfil() {
                   </select>
                 </div>
                 <div>
-                  <Label htmlFor="fuso">Fuso Horário</Label>
+                  <Label htmlFor="timezone">Fuso Horário</Label>
                   <select
-                    id="fuso"
+                    id="timezone"
                     name="timezone"
                     value={preferencias.timezone}
                     onChange={handlePreferenciasChange}
@@ -426,17 +432,17 @@ export default function Perfil() {
                   </select>
                 </div>
                 <div>
-                  <Label htmlFor="tema">Tema</Label>
+                  <Label htmlFor="theme">Tema</Label>
                   <select
-                    id="tema"
+                    id="theme"
                     name="theme"
                     value={preferencias.theme}
                     onChange={handlePreferenciasChange}
                     className="w-full border rounded p-2"
                   >
-                    <option value="Claro">Claro</option>
-                    <option value="Escuro">Escuro</option>
-                    <option value="Automático">Automático</option>
+                    <option value="claro">Claro</option>
+                    <option value="escuro">Escuro</option>
+                    <option value="automático">Automático</option>
                   </select>
                 </div>
                 <Button type="submit" className="bg-green-600 hover:bg-green-700">Salvar Preferências</Button>

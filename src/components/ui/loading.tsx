@@ -22,11 +22,11 @@ export function Loading({ size = "md", text, className }: LoadingProps) {
   return (
     <div className={cn("flex flex-col items-center justify-center space-y-3", className)}>
       <div className={cn(
-        "animate-spin rounded-full border-2 border-gray-300 border-t-green-600",
+        "animate-spin rounded-full border-2 border-gray-300 dark:border-zinc-700 border-t-green-600 dark:border-t-green-400",
         sizeClasses[size]
       )} />
       {text && (
-        <p className={cn("text-gray-600 text-center", textSizes[size])}>
+        <p className={cn("text-gray-600 dark:text-gray-300 text-center", textSizes[size])}>
           {text}
         </p>
       )}
@@ -36,7 +36,7 @@ export function Loading({ size = "md", text, className }: LoadingProps) {
 
 export function LoadingPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-zinc-900">
       <Loading size="lg" text="Carregando..." />
     </div>
   );
@@ -44,7 +44,7 @@ export function LoadingPage() {
 
 export function LoadingCard() {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-700 p-6">
       <Loading size="md" text="Carregando dados..." />
     </div>
   );
