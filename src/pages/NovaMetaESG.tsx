@@ -2,12 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Leaf, Users, Shield, Target, Save } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Leaf, Users, Shield, Target, Save, Calendar, TrendingUp } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 export default function NovaMetaESG() {
   const { user } = useAuth();
@@ -22,6 +25,10 @@ export default function NovaMetaESG() {
     deadline: '',
     description: ''
   });
+  const [existingGoal, setExistingGoal] = useState<any>(null);
+
+  // Hook para scroll automático ao topo
+  useScrollToTop();
 
   useEffect(() => {
     if (!user) return;

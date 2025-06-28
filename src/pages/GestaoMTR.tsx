@@ -28,6 +28,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from 'date-fns';
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 export default function GestaoMTR() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,6 +43,9 @@ export default function GestaoMTR() {
   const [dueDateStart, setDueDateStart] = useState("");
   const [dueDateEnd, setDueDateEnd] = useState("");
   const [searchCNPJ, setSearchCNPJ] = useState("");
+
+  // Hook para scroll automático ao topo
+  useScrollToTop();
 
   useEffect(() => {
     loadMTRData();

@@ -16,11 +16,15 @@ import { useToast } from "@/components/ui/use-toast";
 import { exportDashboardData } from "@/utils/exportUtils";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 export default function Dashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState("atual");
   const { toast } = useToast();
   const { user } = useAuth();
+
+  // Hook para scroll automático ao topo
+  useScrollToTop();
 
   // State for metrics
   const [imcScore, setImcScore] = useState("0/100");

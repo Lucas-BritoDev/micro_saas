@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 import {
   Dialog,
   DialogContent,
@@ -33,6 +34,9 @@ export default function PainelESG() {
   const [monthsFilter, setMonthsFilter] = useState(3);
   const [showScoreDialog, setShowScoreDialog] = useState(false);
   const [lastScore, setLastScore] = useState(null);
+
+  // Hook para scroll automático ao topo
+  useScrollToTop();
 
   useEffect(() => {
     if (!user) return;
@@ -94,7 +98,9 @@ export default function PainelESG() {
     }
   }
 
-  function addWasteField() {
+  function addWasteField(e) {
+    e.preventDefault();
+    e.stopPropagation();
     setEsgForm({ ...esgForm, waste: [...esgForm.waste, { name: '', value: '' }] });
   }
 
@@ -388,7 +394,7 @@ export default function PainelESG() {
                   <Input name={`waste-${idx}-value`} type="number" min={0} max={100} value={w.value} onChange={(e) => handleEsgFormChange(e, idx)} />
                 </div>
               ))}
-              <Button onClick={addWasteField} className="w-full mt-2">Adicionar Resíduo</Button>
+              <Button type="button" onClick={addWasteField} className="w-full mt-2">Adicionar Resíduo</Button>
             </div>
             <button type="submit" className="w-full bg-blue-600 text-white py-2">Calcular ESG</button>
           </form>

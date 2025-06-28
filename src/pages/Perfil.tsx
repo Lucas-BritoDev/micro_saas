@@ -7,11 +7,12 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { AppSidebar } from '@/components/AppSidebar';
+import { Menu } from 'lucide-react';
 
 export default function Perfil() {
   const { user } = useAuth();
   const [tab, setTab] = useState('perfil');
+  const [menuOpen, setMenuOpen] = useState(false);
   // Estados do perfil
   const [perfil, setPerfil] = useState({
     full_name: '',
@@ -252,15 +253,22 @@ export default function Perfil() {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-start">
-      <AppSidebar isCollapsed={false} onToggle={() => {}} />
-      <div className="flex-1 p-4 space-y-6">
-        {/* Header */}
-        <div className="flex flex-col space-y-2 mb-4">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Meu Perfil</h1>
-          <p className="text-gray-600 mt-1">Gerencie suas informações pessoais e configurações</p>
-        </div>
-
+    <div className="flex flex-col w-full">
+      {/* Menu hambúrguer no topo */}
+      <div className="flex items-center mt-4 mb-4">
+        <Button
+          variant="outline"
+          size="icon"
+          className="mr-4 border-2 border-blue-400"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <Menu className="h-7 w-7 text-blue-500" />
+        </Button>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Meu Perfil</h1>
+      </div>
+      <p className="text-gray-600 mb-4 ml-2">Gerencie suas informações pessoais e configurações</p>
+      {/* Aqui pode-se implementar o menu lateral mobile se necessário, usando menuOpen */}
+      <div className="flex-1 p-2 sm:p-4 space-y-6">
         <Tabs value={tab} onValueChange={setTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-2 mb-4">
             <TabsTrigger value="perfil">Perfil</TabsTrigger>

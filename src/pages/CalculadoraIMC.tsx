@@ -14,6 +14,7 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 interface Question {
   id: string;
@@ -413,6 +414,9 @@ export default function CalculadoraIMC() {
   const [consultForm, setConsultForm] = useState({ nome: '', email: '', telefone: '', data: '', observacao: '' });
   const [consultLoading, setConsultLoading] = useState(false);
 
+  // Hook para scroll automático ao topo
+  useScrollToTop();
+
   // Buscar histórico ao carregar
   useEffect(() => {
     if (!user) return;
@@ -436,11 +440,15 @@ export default function CalculadoraIMC() {
   const handleNextGroup = () => {
     if (currentGroup < questionGroups.length - 1) {
       setCurrentGroup(prev => prev + 1);
+      // Scroll para o topo da tela
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   const handlePreviousGroup = () => {
     if (currentGroup > 0) {
       setCurrentGroup(prev => prev - 1);
+      // Scroll para o topo da tela
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -613,6 +621,8 @@ export default function CalculadoraIMC() {
     setCurrentGroup(0);
     setAnswers({});
     setAssessment(null);
+    // Scroll para o topo da tela
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Novo: função para exportar relatório de avaliações do histórico

@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { Label } from "@/components/ui/label";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 export default function Financeiro() {
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -24,6 +25,9 @@ export default function Financeiro() {
     minValue: '',
     maxValue: ''
   });
+
+  // Hook para scroll automático ao topo
+  useScrollToTop();
 
   useEffect(() => {
     loadTransactions();
