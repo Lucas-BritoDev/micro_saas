@@ -211,247 +211,249 @@ export const NewMTRDialog: React.FC<NewMTRDialogProps> = ({ isOpen, onClose, onS
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>
-            {editingMTR ? 'Editar MTR' : 'Novo MTR'}
-          </DialogTitle>
-          <DialogDescription>
-            Manifesto de Transporte de Resíduos
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0">
+        <div className="overflow-y-auto h-[80vh] p-6 sm:p-8">
+          <DialogHeader>
+            <DialogTitle>
+              {editingMTR ? 'Editar MTR' : 'Novo MTR'}
+            </DialogTitle>
+            <DialogDescription>
+              Manifesto de Transporte de Resíduos
+            </DialogDescription>
+          </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Informações do Projeto */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Informações do Projeto</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="project_name">Nome do Projeto *</Label>
-                <Input
-                  id="project_name"
-                  value={formData.project_name}
-                  onChange={(e) => handleInputChange('project_name', e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="location">Localização</Label>
-                <Input
-                  id="location"
-                  value={formData.location}
-                  onChange={(e) => handleInputChange('location', e.target.value)}
-                />
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Informações do Projeto */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Informações do Projeto</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="project_name">Nome do Projeto *</Label>
+                  <Input
+                    id="project_name"
+                    value={formData.project_name}
+                    onChange={(e) => handleInputChange('project_name', e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="location">Localização</Label>
+                  <Input
+                    id="location"
+                    value={formData.location}
+                    onChange={(e) => handleInputChange('location', e.target.value)}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Informações do Resíduo */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Informações do Resíduo</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <Label htmlFor="waste_type">Tipo de Resíduo *</Label>
-                <Select value={formData.waste_type} onValueChange={(value) => handleInputChange('waste_type', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione o tipo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="concreto">Concreto</SelectItem>
-                    <SelectItem value="aco">Aço</SelectItem>
-                    <SelectItem value="madeira">Madeira</SelectItem>
-                    <SelectItem value="plastico">Plástico</SelectItem>
-                    <SelectItem value="gesso">Gesso</SelectItem>
-                    <SelectItem value="ceramica">Cerâmica</SelectItem>
-                    <SelectItem value="outros">Outros</SelectItem>
-                  </SelectContent>
-                </Select>
+            {/* Informações do Resíduo */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Informações do Resíduo</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="waste_type">Tipo de Resíduo *</Label>
+                  <Select value={formData.waste_type} onValueChange={(value) => handleInputChange('waste_type', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="concreto">Concreto</SelectItem>
+                      <SelectItem value="aco">Aço</SelectItem>
+                      <SelectItem value="madeira">Madeira</SelectItem>
+                      <SelectItem value="plastico">Plástico</SelectItem>
+                      <SelectItem value="gesso">Gesso</SelectItem>
+                      <SelectItem value="ceramica">Cerâmica</SelectItem>
+                      <SelectItem value="outros">Outros</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="quantity">Quantidade *</Label>
+                  <Input
+                    id="quantity"
+                    type="number"
+                    step="0.1"
+                    value={formData.quantity}
+                    onChange={(e) => handleInputChange('quantity', e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="unit">Unidade</Label>
+                  <Select value={formData.unit} onValueChange={(value) => handleInputChange('unit', value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="t">Toneladas (t)</SelectItem>
+                      <SelectItem value="kg">Quilogramas (kg)</SelectItem>
+                      <SelectItem value="m3">Metros cúbicos (m³)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               <div>
-                <Label htmlFor="quantity">Quantidade *</Label>
-                <Input
-                  id="quantity"
-                  type="number"
-                  step="0.1"
-                  value={formData.quantity}
-                  onChange={(e) => handleInputChange('quantity', e.target.value)}
-                  required
+                <Label htmlFor="description">Descrição</Label>
+                <Textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  rows={3}
                 />
               </div>
-              <div>
-                <Label htmlFor="unit">Unidade</Label>
-                <Select value={formData.unit} onValueChange={(value) => handleInputChange('unit', value)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="t">Toneladas (t)</SelectItem>
-                    <SelectItem value="kg">Quilogramas (kg)</SelectItem>
-                    <SelectItem value="m3">Metros cúbicos (m³)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
             </div>
-            <div>
-              <Label htmlFor="description">Descrição</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => handleInputChange('description', e.target.value)}
-                rows={3}
-              />
-            </div>
-          </div>
 
-          {/* Informações do Gerador */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Gerador</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="generator_name">Nome do Gerador *</Label>
-                <Input
-                  id="generator_name"
-                  value={formData.generator_name}
-                  onChange={(e) => handleInputChange('generator_name', e.target.value)}
-                  required
-                />
+            {/* Informações do Gerador */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Gerador</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="generator_name">Nome do Gerador *</Label>
+                  <Input
+                    id="generator_name"
+                    value={formData.generator_name}
+                    onChange={(e) => handleInputChange('generator_name', e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="generator_cnpj">CNPJ *</Label>
+                  <Input
+                    id="generator_cnpj"
+                    value={formData.generator_cnpj}
+                    onChange={(e) => handleInputChange('generator_cnpj', e.target.value)}
+                    required
+                  />
+                </div>
               </div>
               <div>
-                <Label htmlFor="generator_cnpj">CNPJ *</Label>
+                <Label htmlFor="generator_address">Endereço</Label>
                 <Input
-                  id="generator_cnpj"
-                  value={formData.generator_cnpj}
-                  onChange={(e) => handleInputChange('generator_cnpj', e.target.value)}
-                  required
+                  id="generator_address"
+                  value={formData.generator_address}
+                  onChange={(e) => handleInputChange('generator_address', e.target.value)}
                 />
               </div>
             </div>
-            <div>
-              <Label htmlFor="generator_address">Endereço</Label>
-              <Input
-                id="generator_address"
-                value={formData.generator_address}
-                onChange={(e) => handleInputChange('generator_address', e.target.value)}
-              />
-            </div>
-          </div>
 
-          {/* Informações do Transportador */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Transportador</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <Label htmlFor="transporter_name">Nome do Transportador</Label>
-                <Input
-                  id="transporter_name"
-                  value={formData.transporter_name}
-                  onChange={(e) => handleInputChange('transporter_name', e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor="transporter_cnpj">CNPJ</Label>
-                <Input
-                  id="transporter_cnpj"
-                  value={formData.transporter_cnpj}
-                  onChange={(e) => handleInputChange('transporter_cnpj', e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor="transporter_license">Licença</Label>
-                <Input
-                  id="transporter_license"
-                  value={formData.transporter_license}
-                  onChange={(e) => handleInputChange('transporter_license', e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Informações do Receptor */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Receptor</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <Label htmlFor="receiver_name">Nome do Receptor</Label>
-                <Input
-                  id="receiver_name"
-                  value={formData.receiver_name}
-                  onChange={(e) => handleInputChange('receiver_name', e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor="receiver_cnpj">CNPJ</Label>
-                <Input
-                  id="receiver_cnpj"
-                  value={formData.receiver_cnpj}
-                  onChange={(e) => handleInputChange('receiver_cnpj', e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor="receiver_license">Licença</Label>
-                <Input
-                  id="receiver_license"
-                  value={formData.receiver_license}
-                  onChange={(e) => handleInputChange('receiver_license', e.target.value)}
-                />
+            {/* Informações do Transportador */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Transportador</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="transporter_name">Nome do Transportador</Label>
+                  <Input
+                    id="transporter_name"
+                    value={formData.transporter_name}
+                    onChange={(e) => handleInputChange('transporter_name', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="transporter_cnpj">CNPJ</Label>
+                  <Input
+                    id="transporter_cnpj"
+                    value={formData.transporter_cnpj}
+                    onChange={(e) => handleInputChange('transporter_cnpj', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="transporter_license">Licença</Label>
+                  <Input
+                    id="transporter_license"
+                    value={formData.transporter_license}
+                    onChange={(e) => handleInputChange('transporter_license', e.target.value)}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Datas */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Datas</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label>Data de Emissão *</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-normal">
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {formData.issue_date ? format(formData.issue_date, "dd/MM/yyyy", { locale: ptBR }) : "Selecione a data"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={formData.issue_date}
-                      onSelect={(date) => handleDateChange('issue_date', date)}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-              <div>
-                <Label>Data de Vencimento *</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-normal">
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {formData.due_date ? format(formData.due_date, "dd/MM/yyyy", { locale: ptBR }) : "Selecione a data"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={formData.due_date}
-                      onSelect={(date) => handleDateChange('due_date', date)}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+            {/* Informações do Receptor */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Receptor</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="receiver_name">Nome do Receptor</Label>
+                  <Input
+                    id="receiver_name"
+                    value={formData.receiver_name}
+                    onChange={(e) => handleInputChange('receiver_name', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="receiver_cnpj">CNPJ</Label>
+                  <Input
+                    id="receiver_cnpj"
+                    value={formData.receiver_cnpj}
+                    onChange={(e) => handleInputChange('receiver_cnpj', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="receiver_license">Licença</Label>
+                  <Input
+                    id="receiver_license"
+                    value={formData.receiver_license}
+                    onChange={(e) => handleInputChange('receiver_license', e.target.value)}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex justify-end space-x-2 pt-4 border-t">
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancelar
-            </Button>
-            <Button type="submit" disabled={loading} className="bg-green-600 hover:bg-green-700">
-              {loading ? 'Criando...' : 'Criar MTR'}
-            </Button>
-          </div>
-        </form>
+            {/* Datas */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Datas</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Data de Emissão *</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className="w-full justify-start text-left font-normal">
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {formData.issue_date ? format(formData.issue_date, "dd/MM/yyyy", { locale: ptBR }) : "Selecione a data"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={formData.issue_date}
+                        onSelect={(date) => handleDateChange('issue_date', date)}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div>
+                  <Label>Data de Vencimento *</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className="w-full justify-start text-left font-normal">
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {formData.due_date ? format(formData.due_date, "dd/MM/yyyy", { locale: ptBR }) : "Selecione a data"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={formData.due_date}
+                        onSelect={(date) => handleDateChange('due_date', date)}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-2 pt-4 border-t">
+              <Button type="button" variant="outline" onClick={onClose}>
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={loading} className="bg-green-600 hover:bg-green-700">
+                {loading ? 'Criando...' : 'Criar MTR'}
+              </Button>
+            </div>
+          </form>
+        </div>
       </DialogContent>
     </Dialog>
   );

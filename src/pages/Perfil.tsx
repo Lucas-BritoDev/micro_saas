@@ -253,246 +253,210 @@ export default function Perfil() {
   };
 
   return (
-    <div className="flex flex-col w-full">
-      {/* Menu hambúrguer no topo */}
-      <div className="flex items-center mt-4 mb-4">
+    <div className="w-full max-w-3xl mx-auto px-2 sm:px-0 space-y-6">
+      {/* Menu hambúrguer e título */}
+      <div className="flex flex-col items-start pt-6">
         <Button
           variant="outline"
           size="icon"
-          className="mr-4 border-2 border-blue-400"
+          className="border-2 border-blue-400 shadow-md mb-2 bg-white"
+          style={{ boxShadow: '0 2px 8px 0 rgba(56, 189, 248, 0.10)' }}
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <Menu className="h-7 w-7 text-blue-500" />
         </Button>
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Meu Perfil</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-2">Meu Perfil</h1>
+        <p className="text-gray-600 mt-1">Gerencie suas informações pessoais e configurações</p>
       </div>
-      <p className="text-gray-600 mb-4 ml-2">Gerencie suas informações pessoais e configurações</p>
-      {/* Aqui pode-se implementar o menu lateral mobile se necessário, usando menuOpen */}
-      <div className="flex-1 p-2 sm:p-4 space-y-6">
-        <Tabs value={tab} onValueChange={setTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-2 mb-4">
-            <TabsTrigger value="perfil">Perfil</TabsTrigger>
-            <TabsTrigger value="seguranca">Segurança</TabsTrigger>
-            <TabsTrigger value="notificacoes">Notificações</TabsTrigger>
-            <TabsTrigger value="preferencias">Preferências</TabsTrigger>
-            <TabsTrigger value="atividade">Atividade</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="perfil">
-            <Card>
-              <CardHeader>
-                <CardTitle>Informações Pessoais</CardTitle>
-                <CardDescription>Atualize suas informações pessoais</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form className="grid grid-cols-1 sm:grid-cols-2 gap-4" onSubmit={handleSalvarPerfil}>
-                  <div>
-                    <Label htmlFor="nome">Nome Completo</Label>
-                    <Input id="nome" name="full_name" value={perfil.full_name} onChange={handlePerfilChange} placeholder="Nome Completo" />
-                  </div>
-                  <div>
-                    <Label htmlFor="empresa">Empresa</Label>
-                    <Input id="empresa" name="company" value={perfil.company} onChange={handlePerfilChange} placeholder="Nome da Empresa" />
-                  </div>
-                  <div>
-                    <Label htmlFor="telefone">Telefone</Label>
-                    <Input id="telefone" name="phone" value={perfil.phone} onChange={handlePerfilChange} placeholder="(11) 99999-9999" />
-                  </div>
-                  <div>
-                    <Label htmlFor="avatar_url">Avatar URL</Label>
-                    <Input id="avatar_url" name="avatar_url" value={perfil.avatar_url} onChange={handlePerfilChange} placeholder="URL da foto de perfil" />
-                  </div>
-                  <div>
-                    <Label htmlFor="role">Cargo</Label>
-                    <Input id="role" name="role" value={perfil.role} onChange={handlePerfilChange} placeholder="Ex: Engenheiro Civil" />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <Button type="submit" className="bg-green-600 hover:bg-green-700">Salvar Alterações</Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
+      {/* Tabs igual Suporte */}
+      <Tabs value={tab} onValueChange={setTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-1 mb-4 bg-gray-50 rounded-xl shadow-sm">
+          <TabsTrigger value="perfil" className="text-xs sm:text-sm py-2 px-1 sm:px-3">Perfil</TabsTrigger>
+          <TabsTrigger value="seguranca" className="text-xs sm:text-sm py-2 px-1 sm:px-3">Segurança</TabsTrigger>
+          <TabsTrigger value="notificacoes" className="text-xs sm:text-sm py-2 px-1 sm:px-3">Notificações</TabsTrigger>
+          <TabsTrigger value="preferencias" className="text-xs sm:text-sm py-2 px-1 sm:px-3">Preferências</TabsTrigger>
+          {/* Se quiser adicionar mais sessões, pode seguir o padrão */}
+        </TabsList>
+        
+        <TabsContent value="perfil">
+          <Card>
+            <CardHeader>
+              <CardTitle>Informações Pessoais</CardTitle>
+              <CardDescription>Atualize suas informações pessoais</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form className="grid grid-cols-1 sm:grid-cols-2 gap-4" onSubmit={handleSalvarPerfil}>
+                <div>
+                  <Label htmlFor="nome">Nome Completo</Label>
+                  <Input id="nome" name="full_name" value={perfil.full_name} onChange={handlePerfilChange} placeholder="Nome Completo" />
+                </div>
+                <div>
+                  <Label htmlFor="empresa">Empresa</Label>
+                  <Input id="empresa" name="company" value={perfil.company} onChange={handlePerfilChange} placeholder="Nome da Empresa" />
+                </div>
+                <div>
+                  <Label htmlFor="telefone">Telefone</Label>
+                  <Input id="telefone" name="phone" value={perfil.phone} onChange={handlePerfilChange} placeholder="(11) 99999-9999" />
+                </div>
+                <div>
+                  <Label htmlFor="avatar_url">Avatar URL</Label>
+                  <Input id="avatar_url" name="avatar_url" value={perfil.avatar_url} onChange={handlePerfilChange} placeholder="URL da foto de perfil" />
+                </div>
+                <div>
+                  <Label htmlFor="role">Cargo</Label>
+                  <Input id="role" name="role" value={perfil.role} onChange={handlePerfilChange} placeholder="Ex: Engenheiro Civil" />
+                </div>
+                <div className="sm:col-span-2">
+                  <Button type="submit" className="bg-green-600 hover:bg-green-700">Salvar Alterações</Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-          <TabsContent value="seguranca">
-            <Card>
-              <CardHeader>
-                <CardTitle>Segurança</CardTitle>
-                <CardDescription>Gerencie a segurança da sua conta</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form className="space-y-4" onSubmit={handleAlterarSenha}>
-                  <div>
-                    <Label htmlFor="senha-atual">Senha Atual</Label>
-                    <Input id="senha-atual" type="password" placeholder="Digite sua senha atual" value={senhaAtual} onChange={e => setSenhaAtual(e.target.value)} />
-                  </div>
-                  <div>
-                    <Label htmlFor="nova-senha">Nova Senha</Label>
-                    <Input id="nova-senha" type="password" placeholder="Digite a nova senha" value={novaSenha} onChange={e => setNovaSenha(e.target.value)} />
-                  </div>
-                  <div>
-                    <Label htmlFor="confirmar-senha">Confirmar Nova Senha</Label>
-                    <Input id="confirmar-senha" type="password" placeholder="Confirme a nova senha" value={confirmarSenha} onChange={e => setConfirmarSenha(e.target.value)} />
-                  </div>
-                  <Button type="submit" className="bg-green-600 hover:bg-green-700">Alterar Senha</Button>
-                </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
+        <TabsContent value="seguranca">
+          <Card>
+            <CardHeader>
+              <CardTitle>Segurança</CardTitle>
+              <CardDescription>Gerencie a segurança da sua conta</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-4" onSubmit={handleAlterarSenha}>
+                <div>
+                  <Label htmlFor="senha-atual">Senha Atual</Label>
+                  <Input id="senha-atual" type="password" placeholder="Digite sua senha atual" value={senhaAtual} onChange={e => setSenhaAtual(e.target.value)} />
+                </div>
+                <div>
+                  <Label htmlFor="nova-senha">Nova Senha</Label>
+                  <Input id="nova-senha" type="password" placeholder="Digite a nova senha" value={novaSenha} onChange={e => setNovaSenha(e.target.value)} />
+                </div>
+                <div>
+                  <Label htmlFor="confirmar-senha">Confirmar Nova Senha</Label>
+                  <Input id="confirmar-senha" type="password" placeholder="Confirme a nova senha" value={confirmarSenha} onChange={e => setConfirmarSenha(e.target.value)} />
+                </div>
+                <Button type="submit" className="bg-green-600 hover:bg-green-700">Alterar Senha</Button>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-          <TabsContent value="notificacoes">
-            <Card>
-              <CardHeader>
-                <CardTitle>Notificações</CardTitle>
-                <CardDescription>Configure suas preferências de notificação</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form className="space-y-4" onSubmit={handleSalvarNotificacoes}>
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="email"
-                        checked={notificacoes.notification_email}
-                        onChange={() => handleNotificacoesChange('notification_email')}
-                      />
-                      <Label htmlFor="email">Notificações por E-mail</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="sms"
-                        checked={notificacoes.notification_sms}
-                        onChange={() => handleNotificacoesChange('notification_sms')}
-                      />
-                      <Label htmlFor="sms">Notificações por SMS</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="push"
-                        checked={notificacoes.notification_push}
-                        onChange={() => handleNotificacoesChange('notification_push')}
-                      />
-                      <Label htmlFor="push">Notificações Push</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="alerts"
-                        checked={notificacoes.notification_due_alerts}
-                        onChange={() => handleNotificacoesChange('notification_due_alerts')}
-                      />
-                      <Label htmlFor="alerts">Alertas de Vencimento</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="report"
-                        checked={notificacoes.notification_weekly_report}
-                        onChange={() => handleNotificacoesChange('notification_weekly_report')}
-                      />
-                      <Label htmlFor="report">Relatório Semanal</Label>
-                    </div>
+        <TabsContent value="notificacoes">
+          <Card>
+            <CardHeader>
+              <CardTitle>Notificações</CardTitle>
+              <CardDescription>Configure suas preferências de notificação</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-4" onSubmit={handleSalvarNotificacoes}>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="email"
+                      checked={notificacoes.notification_email}
+                      onChange={() => handleNotificacoesChange('notification_email')}
+                    />
+                    <Label htmlFor="email">Notificações por E-mail</Label>
                   </div>
-                  <Button type="submit" className="bg-green-600 hover:bg-green-700">Salvar Preferências</Button>
-                </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="preferencias">
-            <Card>
-              <CardHeader>
-                <CardTitle>Preferências do Sistema</CardTitle>
-                <CardDescription>Configure suas preferências de uso</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form className="space-y-4" onSubmit={handleSalvarPreferencias}>
-                  <div>
-                    <Label htmlFor="idioma">Idioma</Label>
-                    <select
-                      id="idioma"
-                      name="language"
-                      value={preferencias.language}
-                      onChange={handlePreferenciasChange}
-                      className="w-full border rounded p-2"
-                    >
-                      <option value="Português (Brasil)">Português (Brasil)</option>
-                      <option value="English">English</option>
-                      <option value="Español">Español</option>
-                    </select>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="sms"
+                      checked={notificacoes.notification_sms}
+                      onChange={() => handleNotificacoesChange('notification_sms')}
+                    />
+                    <Label htmlFor="sms">Notificações por SMS</Label>
                   </div>
-                  <div>
-                    <Label htmlFor="fuso">Fuso Horário</Label>
-                    <select
-                      id="fuso"
-                      name="timezone"
-                      value={preferencias.timezone}
-                      onChange={handlePreferenciasChange}
-                      className="w-full border rounded p-2"
-                    >
-                      <option value="Brasília (GMT-3)">Brasília (GMT-3)</option>
-                      <option value="Manaus (GMT-4)">Manaus (GMT-4)</option>
-                      <option value="Acre (GMT-5)">Acre (GMT-5)</option>
-                    </select>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="push"
+                      checked={notificacoes.notification_push}
+                      onChange={() => handleNotificacoesChange('notification_push')}
+                    />
+                    <Label htmlFor="push">Notificações Push</Label>
                   </div>
-                  <div>
-                    <Label htmlFor="tema">Tema</Label>
-                    <select
-                      id="tema"
-                      name="theme"
-                      value={preferencias.theme}
-                      onChange={handlePreferenciasChange}
-                      className="w-full border rounded p-2"
-                    >
-                      <option value="Claro">Claro</option>
-                      <option value="Escuro">Escuro</option>
-                      <option value="Automático">Automático</option>
-                    </select>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="alerts"
+                      checked={notificacoes.notification_due_alerts}
+                      onChange={() => handleNotificacoesChange('notification_due_alerts')}
+                    />
+                    <Label htmlFor="alerts">Alertas de Vencimento</Label>
                   </div>
-                  <Button type="submit" className="bg-green-600 hover:bg-green-700">Salvar Preferências</Button>
-                </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="atividade">
-            <Card>
-              <CardHeader>
-                <CardTitle>Atividade da Conta</CardTitle>
-                <CardDescription>Últimas ações realizadas no sistema</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {atividades.length === 0 ? (
-                    <div className="text-gray-500 text-center py-8">Nenhuma atividade recente encontrada.</div>
-                  ) : (
-                    <ul className="divide-y divide-gray-200">
-                      {atividades.map((a, idx) => (
-                        <li key={idx} className="py-2 flex items-center justify-between">
-                          <span className="font-medium">{a.descricao}</span>
-                          <span className="text-xs text-gray-500">{new Date(a.data).toLocaleString('pt-BR')}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <div>
-                    <Button onClick={handleExportar} variant="outline" className="w-full sm:w-auto">
-                      Exportar Meus Dados
-                    </Button>
-                  </div>
-                  <div>
-                    <Button onClick={handleExcluirConta} variant="destructive" className="w-full sm:w-auto">
-                      Excluir Conta
-                    </Button>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="report"
+                      checked={notificacoes.notification_weekly_report}
+                      onChange={() => handleNotificacoesChange('notification_weekly_report')}
+                    />
+                    <Label htmlFor="report">Relatório Semanal</Label>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+                <Button type="submit" className="bg-green-600 hover:bg-green-700">Salvar Preferências</Button>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="preferencias">
+          <Card>
+            <CardHeader>
+              <CardTitle>Preferências do Sistema</CardTitle>
+              <CardDescription>Configure suas preferências de uso</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-4" onSubmit={handleSalvarPreferencias}>
+                <div>
+                  <Label htmlFor="idioma">Idioma</Label>
+                  <select
+                    id="idioma"
+                    name="language"
+                    value={preferencias.language}
+                    onChange={handlePreferenciasChange}
+                    className="w-full border rounded p-2"
+                  >
+                    <option value="Português (Brasil)">Português (Brasil)</option>
+                    <option value="English">English</option>
+                    <option value="Español">Español</option>
+                  </select>
+                </div>
+                <div>
+                  <Label htmlFor="fuso">Fuso Horário</Label>
+                  <select
+                    id="fuso"
+                    name="timezone"
+                    value={preferencias.timezone}
+                    onChange={handlePreferenciasChange}
+                    className="w-full border rounded p-2"
+                  >
+                    <option value="Brasília (GMT-3)">Brasília (GMT-3)</option>
+                    <option value="Manaus (GMT-4)">Manaus (GMT-4)</option>
+                    <option value="Acre (GMT-5)">Acre (GMT-5)</option>
+                  </select>
+                </div>
+                <div>
+                  <Label htmlFor="tema">Tema</Label>
+                  <select
+                    id="tema"
+                    name="theme"
+                    value={preferencias.theme}
+                    onChange={handlePreferenciasChange}
+                    className="w-full border rounded p-2"
+                  >
+                    <option value="Claro">Claro</option>
+                    <option value="Escuro">Escuro</option>
+                    <option value="Automático">Automático</option>
+                  </select>
+                </div>
+                <Button type="submit" className="bg-green-600 hover:bg-green-700">Salvar Preferências</Button>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 } 
