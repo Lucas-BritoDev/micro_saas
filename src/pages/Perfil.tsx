@@ -256,36 +256,36 @@ export default function Perfil() {
 
   return (
     <div className="w-full max-w-3xl mx-auto px-2 sm:px-0 space-y-6">
-      {/* Botão menu drawer igual Suporte */}
+      {/* Botão menu drawer padronizado */}
       <div className="relative flex items-center pt-6 pb-2">
         <Button
           variant="outline"
           size="icon"
-          className="border-2 border-blue-400 shadow-md bg-white w-12 h-12 p-0 flex items-center justify-center"
+          className="border-2 border-blue-400 shadow-md bg-white w-12 h-12 p-0 flex items-center justify-center mr-3"
           style={{ boxShadow: '0 2px 8px 0 rgba(56, 189, 248, 0.10)' }}
           onClick={() => setDrawerOpen(true)}
         >
           <Menu className="h-7 w-7 text-blue-500" />
         </Button>
-        {/* Drawer lateral igual Suporte */}
-        {drawerOpen && (
-          <div className="fixed inset-0 z-50 flex">
-            <div className="bg-white w-64 h-full shadow-xl p-6 flex flex-col">
-              <button className="self-end mb-4 text-gray-500 text-2xl" onClick={() => setDrawerOpen(false)}>&times;</button>
-              <nav className="flex flex-col gap-4 mt-4">
-                <button onClick={() => {navigate('/dashboard'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Dashboard</button>
-                <button onClick={() => {navigate('/PainelESG'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Painel ESG</button>
-                <button onClick={() => {navigate('/GestaoMTR'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Gestão MTR</button>
-                <button onClick={() => {navigate('/Financeiro'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Financeiro</button>
-                <button onClick={() => {navigate('/Suporte'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Suporte</button>
-                <button onClick={() => {navigate('/perfil'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Meu Perfil</button>
-              </nav>
-            </div>
-            <div className="flex-1 bg-black bg-opacity-30" onClick={() => setDrawerOpen(false)}></div>
-          </div>
-        )}
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 ml-4">Meu Perfil</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Meu Perfil</h1>
       </div>
+      {/* Drawer lateral igual Suporte */}
+      {drawerOpen && (
+        <div className="fixed inset-0 z-50 flex">
+          <div className="bg-white w-64 h-full shadow-xl p-6 flex flex-col">
+            <button className="self-end mb-4 text-gray-500 text-2xl" onClick={() => setDrawerOpen(false)}>&times;</button>
+            <nav className="flex flex-col gap-4 mt-4">
+              <button onClick={() => {navigate('/dashboard'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Dashboard</button>
+              <button onClick={() => {navigate('/PainelESG'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Painel ESG</button>
+              <button onClick={() => {navigate('/GestaoMTR'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Gestão MTR</button>
+              <button onClick={() => {navigate('/Financeiro'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Financeiro</button>
+              <button onClick={() => {navigate('/Suporte'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Suporte</button>
+              <button onClick={() => {navigate('/perfil'); setDrawerOpen(false);}} className="text-blue-600 font-medium text-left">Meu Perfil</button>
+            </nav>
+          </div>
+          <div className="flex-1 bg-black bg-opacity-30" onClick={() => setDrawerOpen(false)}></div>
+        </div>
+      )}
       <p className="text-gray-600 mb-2 ml-1">Gerencie suas informações pessoais e configurações</p>
       {/* Tabs igual Suporte */}
       <Tabs value={tab} onValueChange={setTab} className="w-full">
