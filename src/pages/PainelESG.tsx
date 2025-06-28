@@ -367,37 +367,39 @@ export default function PainelESG() {
 
       {/* Formulário ESG */}
       <Dialog open={showEsgForm} onOpenChange={setShowEsgForm}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Calcular ESG</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleEsgFormSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <Label>Ambiental (E)</Label>
-                <Input name="environmental" type="number" min={0} max={100} value={esgForm.environmental} onChange={handleEsgFormChange} required />
-              </div>
-              <div>
-                <Label>Social (S)</Label>
-                <Input name="social" type="number" min={0} max={100} value={esgForm.social} onChange={handleEsgFormChange} required />
-              </div>
-              <div>
-                <Label>Governança (G)</Label>
-                <Input name="governance" type="number" min={0} max={100} value={esgForm.governance} onChange={handleEsgFormChange} required />
-              </div>
-            </div>
-            <div>
-              <Label>Distribuição de Resíduos (%)</Label>
-              {esgForm.waste.map((w, idx) => (
-                <div key={idx} className="flex gap-2 mb-2">
-                  <Input name={`waste-${idx}-name`} value={w.name} onChange={(e) => handleEsgFormChange(e, idx)} />
-                  <Input name={`waste-${idx}-value`} type="number" min={0} max={100} value={w.value} onChange={(e) => handleEsgFormChange(e, idx)} />
+        <DialogContent className="max-w-2xl p-0">
+          <div className="overflow-y-auto max-h-[80vh] p-6 sm:p-8">
+            <DialogHeader>
+              <DialogTitle>Calcular ESG</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleEsgFormSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <Label>Ambiental (E)</Label>
+                  <Input name="environmental" type="number" min={0} max={100} value={esgForm.environmental} onChange={handleEsgFormChange} required />
                 </div>
-              ))}
-              <Button type="button" onClick={addWasteField} className="w-full mt-2">Adicionar Resíduo</Button>
-            </div>
-            <button type="submit" className="w-full bg-blue-600 text-white py-2">Calcular ESG</button>
-          </form>
+                <div>
+                  <Label>Social (S)</Label>
+                  <Input name="social" type="number" min={0} max={100} value={esgForm.social} onChange={handleEsgFormChange} required />
+                </div>
+                <div>
+                  <Label>Governança (G)</Label>
+                  <Input name="governance" type="number" min={0} max={100} value={esgForm.governance} onChange={handleEsgFormChange} required />
+                </div>
+              </div>
+              <div>
+                <Label>Distribuição de Resíduos (%)</Label>
+                {esgForm.waste.map((w, idx) => (
+                  <div key={idx} className="flex gap-2 mb-2">
+                    <Input name={`waste-${idx}-name`} value={w.name} onChange={(e) => handleEsgFormChange(e, idx)} />
+                    <Input name={`waste-${idx}-value`} type="number" min={0} max={100} value={w.value} onChange={(e) => handleEsgFormChange(e, idx)} />
+                  </div>
+                ))}
+                <Button type="button" onClick={addWasteField} className="w-full mt-2">Adicionar Resíduo</Button>
+              </div>
+              <button type="submit" className="w-full bg-blue-600 text-white py-2">Calcular ESG</button>
+            </form>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

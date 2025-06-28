@@ -259,12 +259,29 @@ export default function Perfil() {
         <Button
           variant="outline"
           size="icon"
-          className="border-2 border-blue-400 shadow-md mb-2 bg-white"
+          className="border-2 border-blue-400 shadow-md mb-2 bg-white w-12 h-12 p-0 flex items-center justify-center"
           style={{ boxShadow: '0 2px 8px 0 rgba(56, 189, 248, 0.10)' }}
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => setMenuOpen(true)}
         >
           <Menu className="h-7 w-7 text-blue-500" />
         </Button>
+        {/* Drawer lateral simples */}
+        {menuOpen && (
+          <div className="fixed inset-0 z-50 flex">
+            <div className="bg-white w-64 h-full shadow-xl p-6 flex flex-col">
+              <button className="self-end mb-4 text-gray-500" onClick={() => setMenuOpen(false)}>&times;</button>
+              <nav className="flex flex-col gap-4">
+                <a href="/dashboard" className="text-blue-600 font-medium">Dashboard</a>
+                <a href="/PainelESG" className="text-blue-600 font-medium">Painel ESG</a>
+                <a href="/GestaoMTR" className="text-blue-600 font-medium">Gestão MTR</a>
+                <a href="/Financeiro" className="text-blue-600 font-medium">Financeiro</a>
+                <a href="/Suporte" className="text-blue-600 font-medium">Suporte</a>
+                <a href="/perfil" className="text-blue-600 font-medium">Meu Perfil</a>
+              </nav>
+            </div>
+            <div className="flex-1 bg-black bg-opacity-30" onClick={() => setMenuOpen(false)}></div>
+          </div>
+        )}
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-2">Meu Perfil</h1>
         <p className="text-gray-600 mt-1">Gerencie suas informações pessoais e configurações</p>
       </div>
