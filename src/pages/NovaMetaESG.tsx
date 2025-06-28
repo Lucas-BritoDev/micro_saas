@@ -112,14 +112,6 @@ export default function NovaMetaESG() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4 mb-6">
-        <Button 
-          variant="outline" 
-          onClick={() => navigate('/painel-esg')}
-          className="flex items-center gap-2"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Voltar
-        </Button>
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-2">
           <Target className="text-green-600" />
           Nova Meta ESG

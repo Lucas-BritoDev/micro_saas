@@ -139,15 +139,15 @@ export default function Perfil() {
     }
     const { error } = await supabase
       .from('profiles')
-      .upsert({
-        id: user.id,
+      .update({
         full_name: perfil.full_name,
         company: perfil.company,
         phone: perfil.phone,
         avatar_url: perfil.avatar_url,
         role: perfil.role,
         updated_at: new Date().toISOString(),
-      });
+      })
+      .eq('id', user.id);
     if (!error) {
       toast({ title: 'Perfil atualizado', description: 'Suas informações foram salvas com sucesso.' });
     } else {
