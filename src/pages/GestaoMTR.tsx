@@ -43,6 +43,7 @@ export default function GestaoMTR() {
   const [dueDateStart, setDueDateStart] = useState("");
   const [dueDateEnd, setDueDateEnd] = useState("");
   const [searchCNPJ, setSearchCNPJ] = useState("");
+  const [editingMTR, setEditingMTR] = useState<any>(null);
 
   // Hook para scroll automático ao topo
   useScrollToTop();
@@ -127,25 +128,18 @@ export default function GestaoMTR() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col mb-4">
         <h1 className="text-2xl font-bold">Gestão de MTR</h1>
-        <Button variant="destructive" onClick={handleDeleteAllMTR} className="flex items-center gap-2">
-          <Trash2 className="h-4 w-4" /> Zerar Relatórios
-        </Button>
-      </div>
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-        <div>
-          <p className="text-gray-600 mt-1">Manifesto de Transporte de Resíduos</p>
-        </div>
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-          <Button variant="outline" onClick={handleExport} className="w-full sm:w-auto">
-            <Download className="h-4 w-4 mr-2" />
-            Exportar Todos
+        <p className="text-gray-600 mt-1">Manifesto de Transporte de Resíduos</p>
+        <div className="flex flex-col gap-2 w-full mt-2">
+          <Button variant="outline" onClick={handleExport} className="w-full flex items-center justify-center">
+            <Download className="h-4 w-4 mr-2" /> Exportar
           </Button>
-          <Button className="bg-green-600 hover:bg-green-700 w-full sm:w-auto" onClick={() => setShowNewMTRDialog(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            Novo MTR
+          <Button className="bg-green-600 hover:bg-green-700 w-full flex items-center justify-center" onClick={() => setShowNewMTRDialog(true)}>
+            <Plus className="h-4 w-4 mr-2" /> Novo MTR
+          </Button>
+          <Button variant="destructive" onClick={handleDeleteAllMTR} className="w-full flex items-center justify-center">
+            <Trash2 className="h-4 w-4 mr-2" /> Zerar Relatórios
           </Button>
         </div>
       </div>
@@ -266,7 +260,7 @@ export default function GestaoMTR() {
                     <Download className="h-4 w-4 mr-2" />
                     Relatório SINIR
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => { setEditingMTR(mtr); setShowNewMTRDialog(true); }}>
                     <Edit className="h-4 w-4 mr-2" />
                     Editar
                   </Button>
@@ -281,8 +275,9 @@ export default function GestaoMTR() {
         <div className="w-full max-w-5xl mx-auto my-6">
           <NewMTRDialog
             isOpen={showNewMTRDialog}
-            onClose={() => setShowNewMTRDialog(false)}
+            onClose={() => { setShowNewMTRDialog(false); setEditingMTR(null); }}
             onSuccess={loadMTRData}
+            editingMTR={editingMTR}
           />
         </div>
       )}

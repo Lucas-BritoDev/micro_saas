@@ -41,139 +41,121 @@ export default function Dashboard() {
     const fetchDashboardData = async () => {
       if (!user) return;
 
-      // Buscar último score IMC do usuário
-      try {
-        const { data, error } = await supabase
-          .from('sustainability_metrics')
-          .select('total_score, created_at')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .single();
-        console.log('Último IMC:', data);
-        if (!error && data && 'total_score' in data && data.total_score !== undefined) {
-          setImcScore(`${data.total_score}/100`);
-        } else {
-          setImcScore("0/100");
-        }
-      } catch (err) {
-        setImcScore("0/100");
+      // Definir datas de início e fim conforme filtro
+      const now = new Date();
+      let startDate, endDate;
+      if (selectedPeriod === "atual") {
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+      } else if (selectedPeriod === "anterior") {
+        startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        endDate = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
+      } else {
+        let months = 3;
+        if (selectedPeriod === "6meses") months = 6;
+        if (selectedPeriod === "9meses") months = 9;
+        if (selectedPeriod === "12meses") months = 12;
+        startDate = new Date(now.getFullYear(), now.getMonth() - (months - 1), 1);
+        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
       }
 
-      // Buscar média do IMC do usuário
+      // Buscar e filtrar IMC
       try {
         const { data: imcData, error: imcError } = await supabase
           .from('sustainability_metrics')
-          .select('total_score')
+          .select('total_score, created_at')
           .eq('user_id', user.id);
-        if (imcError || !imcData || imcData.length === 0) {
-          setImcAverage("0/100");
-        } else {
-          const sum = imcData.reduce((acc: number, curr: any) => acc + (curr.total_score || 0), 0);
-          const avg = Math.round(sum / imcData.length);
+        let filteredIMC: any[] = [];
+        if (Array.isArray(imcData)) {
+          filteredIMC = imcData
+            .filter((item: any) => item && typeof item.total_score === 'number' && item.created_at)
+            .filter((item: any) => {
+              const d = new Date(item.created_at);
+              return d >= startDate && d <= endDate;
+            });
+        }
+        if (filteredIMC.length > 0 && typeof filteredIMC[filteredIMC.length - 1].total_score === 'number') {
+          const last = filteredIMC[filteredIMC.length - 1];
+          setImcScore(`${last.total_score}/100`);
+          const avg = Math.round(filteredIMC.reduce((acc: number, curr: any) => acc + (curr.total_score || 0), 0) / filteredIMC.length);
           setImcAverage(`${avg}/100`);
+        } else {
+          setImcScore("0/100");
+          setImcAverage("0/100");
         }
       } catch (err) {
+        setImcScore("0/100");
         setImcAverage("0/100");
       }
 
-      // Buscar MTRs ativos e vencidos
+      // Buscar e filtrar MTRs
       try {
         const { data: mtrData, error: mtrError } = await supabase
           .from("mtr_records")
-          .select("status")
+          .select("status, created_at")
           .eq("user_id", user.id);
-        if (mtrError) {
-          setActiveMTRs("0");
-          setExpiredMTRs("0");
-        } else {
-          const ativos = (mtrData || []).filter((m: any) => m.status === 'ativo').length;
-          const vencidos = (mtrData || []).filter((m: any) => m.status === 'vencido').length;
-          setActiveMTRs(String(ativos));
-          setExpiredMTRs(String(vencidos));
-        }
+        const filteredMTRs = (mtrData || []).filter((m: any) => {
+          const d = new Date(m.created_at);
+          return d >= startDate && d <= endDate;
+        });
+        const ativos = filteredMTRs.filter((m: any) => m.status === 'ativo').length;
+        const vencidos = filteredMTRs.filter((m: any) => m.status === 'vencido').length;
+        setActiveMTRs(String(ativos));
+        setExpiredMTRs(String(vencidos));
       } catch (err) {
         setActiveMTRs("0");
         setExpiredMTRs("0");
       }
 
-      // Buscar transações financeiras do mês atual
+      // Buscar e filtrar transações financeiras
       try {
-        const now = new Date();
-        const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-        const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
         const { data: transactions, error: transError } = await supabase
           .from('financial_transactions')
           .select('*')
           .eq('user_id', user.id);
-        if (transError) {
-          setMonthlyRevenue("R$ 0");
-          setMonthlyBalance("R$ 0");
-          setMonthlyExpense("R$ 0");
-        } else {
-          const receitasMes = (transactions || []).filter((t: any) => {
-            const date = new Date(t.date);
-            return t.type === 'income' && date >= firstDay && date <= lastDay;
-          }).reduce((sum: number, t: any) => sum + (t.amount || 0), 0);
-          const despesasMes = (transactions || []).filter((t: any) => {
-            const date = new Date(t.date);
-            return t.type === 'expense' && date >= firstDay && date <= lastDay;
-          }).reduce((sum: number, t: any) => sum + (t.amount || 0), 0);
-          const saldoMes = receitasMes - despesasMes;
-          setMonthlyRevenue(`R$ ${receitasMes.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`);
-          setMonthlyBalance(`R$ ${saldoMes.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`);
-          setMonthlyExpense(`R$ ${despesasMes.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`);
-        }
+        const filteredTrans = (transactions || []).filter((t: any) => {
+          const d = new Date(t.date);
+          return d >= startDate && d <= endDate;
+        });
+        const receitas = filteredTrans.filter((t: any) => t.type === 'income').reduce((sum: number, t: any) => sum + (t.amount || 0), 0);
+        const despesas = filteredTrans.filter((t: any) => t.type === 'expense').reduce((sum: number, t: any) => sum + (t.amount || 0), 0);
+        const saldo = receitas - despesas;
+        setMonthlyRevenue(`R$ ${receitas.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`);
+        setMonthlyExpense(`R$ ${despesas.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`);
+        setMonthlyBalance(`R$ ${saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`);
       } catch (err) {
         setMonthlyRevenue("R$ 0");
-        setMonthlyBalance("R$ 0");
         setMonthlyExpense("R$ 0");
+        setMonthlyBalance("R$ 0");
       }
 
-      // Buscar último score ESG do relatório
-      try {
-        const { data: esgScoreData, error: esgScoreError } = await supabase
-          .from('esg_scores')
-          .select('environmental_score, social_score, governance_score, created_at')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .single();
-
-        console.log('Último ESG:', esgScoreData);
-
-        if (!esgScoreError && esgScoreData && typeof esgScoreData === 'object') {
-          // Média dos três pilares do último relatório
-          const avg = Math.round(((esgScoreData.environmental_score || 0) + (esgScoreData.social_score || 0) + (esgScoreData.governance_score || 0)) / 3);
-          setEsgScore(`${avg}/100`);
-        } else {
-          setEsgScore("0/100");
-        }
-      } catch (err) {
-        setEsgScore("0/100");
-      }
-
-      // Buscar média do ESG do usuário
+      // Buscar e filtrar ESG
       try {
         const { data: esgData, error: esgError } = await supabase
           .from('esg_scores')
-          .select('environmental_score, social_score, governance_score')
+          .select('environmental_score, social_score, governance_score, created_at')
           .eq('user_id', user.id);
-        if (esgError || !esgData || esgData.length === 0) {
-          setEsgAverage("0/100");
-        } else {
-          // Calcular a média dos três indicadores para cada relatório, depois a média geral
-          const esgMedias = esgData.map((item: any) => ((item.environmental_score || 0) + (item.social_score || 0) + (item.governance_score || 0)) / 3);
-          const avg = Math.round(esgMedias.reduce((acc: number, curr: number) => acc + curr, 0) / esgMedias.length);
+        const filteredESG = (esgData || []).filter((item: any) => {
+          const d = new Date(item.created_at);
+          return d >= startDate && d <= endDate;
+        });
+        if (filteredESG.length > 0) {
+          const last = filteredESG[filteredESG.length - 1];
+          const avg = Math.round(filteredESG.reduce((acc: number, curr: any) => acc + ((curr.environmental_score || 0) + (curr.social_score || 0) + (curr.governance_score || 0)) / 3, 0) / filteredESG.length);
+          setEsgScore(`${Math.round(((last.environmental_score || 0) + (last.social_score || 0) + (last.governance_score || 0)) / 3)}/100`);
           setEsgAverage(`${avg}/100`);
+        } else {
+          setEsgScore("0/100");
+          setEsgAverage("0/100");
         }
       } catch (err) {
+        setEsgScore("0/100");
         setEsgAverage("0/100");
       }
     };
 
     fetchDashboardData();
-  }, [user]);
+  }, [user, selectedPeriod]);
 
   const handleExport = () => {
     try {
@@ -181,9 +163,11 @@ export default function Dashboard() {
         imcScore,
         imcAverage,
         activeMTRs,
+        expiredMTRs,
         esgScore,
         esgAverage,
         monthlyRevenue,
+        monthlyExpense,
         monthlyBalance
       });
       toast({
@@ -202,26 +186,22 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-1">Visão geral do seu canteiro sustentável</p>
-        </div>
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+      <div className="flex flex-col gap-2 mb-4">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
+        <p className="text-gray-600 mt-1">Visão geral do seu canteiro sustentável</p>
+        <div className="flex flex-col gap-2 w-full mt-2">
+          <Button onClick={handleExport} className="w-full flex items-center justify-center">
+            <Download className="h-4 w-4 mr-2" /> Exportar
+          </Button>
           <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-            <SelectTrigger className="w-full sm:w-auto">
+            <SelectTrigger className="w-full">
               <SelectValue placeholder="Período" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="atual">Mês Atual</SelectItem>
               <SelectItem value="anterior">Mês Anterior</SelectItem>
-              <SelectItem value="trimestre">Último Trimestre</SelectItem>
             </SelectContent>
           </Select>
-          <Button onClick={handleExport} className="w-full sm:w-auto">
-            <Download className="h-4 w-4 mr-2" />
-            Exportar
-          </Button>
         </div>
       </div>
 

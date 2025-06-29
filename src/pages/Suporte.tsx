@@ -240,21 +240,17 @@ export default function Suporte() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Central de Suporte</h1>
-          <p className="text-gray-600 mt-1">Tire suas dúvidas e solicite ajuda</p>
-        </div>
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-          <Button variant="outline" className="w-full sm:w-auto" onClick={() => setActiveTab('contato-direto')}>
-            <Phone className="h-4 w-4 mr-2" />
-            Contato
+      <div className="flex flex-col gap-2 mb-4">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Central de Suporte</h1>
+        <p className="text-gray-600 mt-1">Tire suas dúvidas e solicite ajuda</p>
+        <div className="flex flex-col gap-2 w-full mt-2">
+          <Button variant="outline" className="w-full flex items-center justify-center" onClick={() => setActiveTab('contato-direto')}>
+            <Phone className="h-4 w-4 mr-2" /> Contato
           </Button>
-          <Button className="w-full sm:w-auto" onClick={() => setActiveTab('abrir-chamado')}>
-            <MessageSquare className="h-4 w-4 mr-2" />
-            Novo Chamado
+          <Button className="w-full flex items-center justify-center" onClick={() => setActiveTab('abrir-chamado')}>
+            <MessageSquare className="h-4 w-4 mr-2" /> Novo Chamado
           </Button>
-          <Button variant="destructive" onClick={handleZerarChamados} className="w-full sm:w-auto">
+          <Button variant="destructive" onClick={handleZerarChamados} className="w-full flex items-center justify-center">
             Zerar Chamados
           </Button>
         </div>
@@ -449,11 +445,11 @@ export default function Suporte() {
                           <td className="p-2 border">{c.description}</td>
                           <td className="p-2 border">{new Date(c.created_at).toLocaleString('pt-BR')}</td>
                           <td className="p-2 border">
-                            {c.status !== 'finalizado' && (
-                              <Button size="sm" variant="outline" onClick={() => handleStatusChamado(c.id, 'finalizado')}>Finalizar</Button>
+                            {c.status !== 'fechado' && (
+                              <Button size="sm" variant="outline" onClick={() => handleStatusChamado(c.id, 'fechado')}>Finalizar</Button>
                             )}
-                            {c.status === 'finalizado' && (
-                              <Button size="sm" variant="outline" onClick={() => handleStatusChamado(c.id, 'ativo')}>Reabrir</Button>
+                            {c.status === 'fechado' && (
+                              <Button size="sm" variant="outline" onClick={() => handleStatusChamado(c.id, 'aberto')}>Reabrir</Button>
                             )}
                           </td>
                         </tr>

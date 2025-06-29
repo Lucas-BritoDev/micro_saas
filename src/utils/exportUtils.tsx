@@ -18,18 +18,22 @@ export const exportDashboardData = (metrics: {
   imcScore: string,
   imcAverage: string,
   activeMTRs: string,
+  expiredMTRs: string,
   esgScore: string,
   esgAverage: string,
   monthlyRevenue: string,
+  monthlyExpense: string,
   monthlyBalance: string
 }) => {
   const data = [
-    { Métrica: 'Score IMC (Último)', Valor: metrics.imcScore },
-    { Métrica: 'Score IMC (Média)', Valor: metrics.imcAverage },
-    { Métrica: 'MTR Ativos', Valor: metrics.activeMTRs },
+    { Métrica: 'Score IMC', Valor: metrics.imcScore },
+    { Métrica: 'Média IMC', Valor: metrics.imcAverage },
     { Métrica: 'Score ESG', Valor: metrics.esgScore },
-    { Métrica: 'Score ESG (Média)', Valor: metrics.esgAverage },
+    { Métrica: 'Média ESG', Valor: metrics.esgAverage },
+    { Métrica: 'MTRs Ativos', Valor: metrics.activeMTRs },
+    { Métrica: 'MTRs Vencidos', Valor: metrics.expiredMTRs },
     { Métrica: 'Receita Mensal', Valor: metrics.monthlyRevenue },
+    { Métrica: 'Despesa Mensal', Valor: metrics.monthlyExpense },
     { Métrica: 'Saldo Mensal', Valor: metrics.monthlyBalance },
   ];
   exportToXLS(data, 'dashboard-report', 'Dashboard');

@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, Legend } from 'recharts';
+import { exportToXLS } from "@/utils/exportUtils";
 
 const ESG_COLORS = ["#22c55e", "#2563eb", "#a21caf"];
 const WASTE_COLORS = ["#22c55e", "#2563eb", "#eab308", "#f97316", "#a21caf", "#06b6d4"];
@@ -170,6 +171,59 @@ export default function PainelESG() {
     }
   };
 
+  // Função para exportar todos os dados do painel ESG
+  function handleExportESG() {
+    // Dados dos cards
+    const cards = [
+      { Categoria: 'Score ESG (Média dos 3 indicadores)', Valor: esgHistory.length > 0 ? (((esgScores.environmental || 0) + (esgScores.social || 0) + (esgScores.governance || 0)) / 3).toFixed(2) + '/100' : '0.00/100' },
+      { Categoria: 'Ambiental (E)', Valor: `${esgScores.environmental}/100` },
+      { Categoria: 'Social (S)', Valor: `${esgScores.social}/100` },
+      { Categoria: 'Governança (G)', Valor: `${esgScores.governance}/100` },
+    ];
+    // Evolução ESG (histórico)
+    const evolucao = esgHistory.map((h, i) => ({
+      Tipo: 'Evolução ESG',
+      Mês: h.month || `Mês ${i+1}`,
+      Ambiental: h.environmental,
+      Social: h.social,
+      Governança: h.governance,
+      Data: h.date ? new Date(h.date).toLocaleDateString('pt-BR') : ''
+    }));
+    // Distribuição de resíduos
+    const residuos = wasteDist.map(w => ({
+      Tipo: 'Resíduo',
+      Nome: w.name,
+      Valor: w.value
+    }));
+    // Metas ESG
+    const metas = goals.map(goal => ({
+      Tipo: 'Meta',
+      Título: goal.title,
+      Descrição: goal.description,
+      Progresso: goal.progress,
+      Status: goal.status,
+      'Data Meta': goal.target_date ? new Date(goal.target_date).toLocaleDateString('pt-BR') : '',
+      'Criada em': goal.created_at ? new Date(goal.created_at).toLocaleDateString('pt-BR') : ''
+    }));
+    // Junta tudo em um único array
+    const data = [
+      ...cards,
+      ...evolucao,
+      ...residuos,
+      ...metas
+    ];
+    exportToXLS(data, 'esg-report', 'Painel ESG');
+    toast.success('Relatório ESG exportado com sucesso!');
+  }
+
+  // Cálculo das médias dos indicadores conforme filtro
+  const filteredHistory = esgHistory.slice(-monthsFilter);
+  const avg = (arr, key) => arr.length === 0 ? 0 : arr.reduce((sum, h) => sum + (h[key] || 0), 0) / arr.length;
+  const avgEnvironmental = avg(filteredHistory, 'environmental');
+  const avgSocial = avg(filteredHistory, 'social');
+  const avgGovernance = avg(filteredHistory, 'governance');
+  const avgScoreESG = (avgEnvironmental + avgSocial + avgGovernance) / 3;
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -183,24 +237,18 @@ export default function PainelESG() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col mb-4">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-2"><Leaf className="text-green-600" /> Painel ESG</h1>
-        <Button variant="destructive" onClick={handleDeleteAllESG} className="flex items-center gap-2">
-          <Trash2 className="h-4 w-4" /> Zerar Relatórios
-        </Button>
-      </div>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-        <div>
-          <p className="text-gray-600 mt-1">Environmental, Social & Governance</p>
-        </div>
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-          <Button variant="outline" onClick={() => toast.info('Exportação em desenvolvimento!')} className="w-full sm:w-auto">
-            <Download className="h-4 w-4 mr-2" />
-            Exportar Relatório
+        <p className="text-gray-600 mt-1">Environmental, Social & Governance</p>
+        <div className="flex flex-col gap-2 w-full mt-2">
+          <Button variant="outline" onClick={handleExportESG} className="w-full flex items-center justify-center">
+            <Download className="h-4 w-4 mr-2" /> Exportar
           </Button>
-          <Button onClick={() => setShowEsgForm(true)} className="w-full sm:w-auto">
-            <Calculator className="h-4 w-4 mr-2" />
-            Calcular ESG
+          <Button onClick={() => setShowEsgForm(true)} className="w-full flex items-center justify-center">
+            <Calculator className="h-4 w-4 mr-2" /> Calcular ESG
+          </Button>
+          <Button variant="destructive" onClick={handleDeleteAllESG} className="w-full flex items-center justify-center">
+            <Trash2 className="h-4 w-4 mr-2" /> Zerar Relatórios
           </Button>
         </div>
       </div>
@@ -213,14 +261,54 @@ export default function PainelESG() {
           <option value={12}>12 relatórios</option>
         </select>
       </div>
+      {/* Novos cards: Último resultado ESG - agora acima do filtro */}
+      <div className="mb-4">
+        <div className="font-semibold text-gray-700 mb-2">Dados do último cálculo ESG</div>
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="p-4 flex flex-col items-center">
+              <span className="text-gray-500 text-xs mb-1">Último Score ESG</span>
+              <span className="text-3xl font-bold">
+                {esgHistory.length > 0 ? (((esgHistory[esgHistory.length-1].environmental || 0) + (esgHistory[esgHistory.length-1].social || 0) + (esgHistory[esgHistory.length-1].governance || 0)) / 3).toFixed(2) : '0.00'}/100
+              </span>
+              <span className="text-blue-600 text-xs">Último relatório</span>
+              <TrendingUp className="h-6 w-6 mt-2 text-blue-500" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4 flex flex-col items-center">
+              <span className="text-gray-500 text-xs mb-1">Último Ambiental (E)</span>
+              <span className="text-3xl font-bold">{esgHistory.length > 0 ? esgHistory[esgHistory.length-1].environmental : 0}/100</span>
+              <span className="text-green-600 text-xs">Último relatório</span>
+              <Leaf className="h-6 w-6 mt-2 text-green-500" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4 flex flex-col items-center">
+              <span className="text-gray-500 text-xs mb-1">Último Social (S)</span>
+              <span className="text-3xl font-bold">{esgHistory.length > 0 ? esgHistory[esgHistory.length-1].social : 0}/100</span>
+              <span className="text-blue-600 text-xs">Último relatório</span>
+              <Users className="h-6 w-6 mt-2 text-blue-500" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4 flex flex-col items-center">
+              <span className="text-gray-500 text-xs mb-1">Último Governança (G)</span>
+              <span className="text-3xl font-bold">{esgHistory.length > 0 ? esgHistory[esgHistory.length-1].governance : 0}/100</span>
+              <span className="text-purple-600 text-xs">Último relatório</span>
+              <Shield className="h-6 w-6 mt-2 text-purple-500" />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
       {/* Cards ESG */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        {/* Card Score ESG */}
+        {/* Card Score ESG - Média */}
         <Card>
           <CardContent className="p-4 flex flex-col items-center">
             <span className="text-gray-500 text-xs mb-1">Score ESG</span>
             <span className="text-3xl font-bold">
-              {esgHistory.length > 0 ? (((esgScores.environmental || 0) + (esgScores.social || 0) + (esgScores.governance || 0)) / 3).toFixed(2) : '0.00'}/100
+              {filteredHistory.length > 0 ? avgScoreESG.toFixed(2) : '0.00'}/100
             </span>
             <span className="text-blue-600 text-xs">Média dos 3 indicadores</span>
             <TrendingUp className="h-6 w-6 mt-2 text-blue-500" />
@@ -229,24 +317,24 @@ export default function PainelESG() {
         <Card>
           <CardContent className="p-4 flex flex-col items-center">
             <span className="text-gray-500 text-xs mb-1">Ambiental (E)</span>
-            <span className="text-3xl font-bold">{esgScores.environmental}/100</span>
-            <span className="text-green-600 text-xs">{esgHistory.length > 1 ? `+${esgScores.environmental - esgHistory[esgHistory.length-2].environmental} pts` : '+0 pts'}</span>
+            <span className="text-3xl font-bold">{avgEnvironmental.toFixed(0)}/100</span>
+            <span className="text-green-600 text-xs">Média</span>
             <Leaf className="h-6 w-6 mt-2 text-green-500" />
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 flex flex-col items-center">
             <span className="text-gray-500 text-xs mb-1">Social (S)</span>
-            <span className="text-3xl font-bold">{esgScores.social}/100</span>
-            <span className="text-blue-600 text-xs">{esgHistory.length > 1 ? `+${esgScores.social - esgHistory[esgHistory.length-2].social} pts` : '+0 pts'}</span>
+            <span className="text-3xl font-bold">{avgSocial.toFixed(0)}/100</span>
+            <span className="text-blue-600 text-xs">Média</span>
             <Users className="h-6 w-6 mt-2 text-blue-500" />
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 flex flex-col items-center">
             <span className="text-gray-500 text-xs mb-1">Governança (G)</span>
-            <span className="text-3xl font-bold">{esgScores.governance}/100</span>
-            <span className="text-purple-600 text-xs">{esgHistory.length > 1 ? `+${esgScores.governance - esgHistory[esgHistory.length-2].governance} pts` : '+0 pts'}</span>
+            <span className="text-3xl font-bold">{avgGovernance.toFixed(0)}/100</span>
+            <span className="text-purple-600 text-xs">Média</span>
             <Shield className="h-6 w-6 mt-2 text-purple-500" />
           </CardContent>
         </Card>

@@ -11,18 +11,18 @@ const actions = [
     path: "/calculadora-imc"
   },
   {
-    title: "Emitir MTR",
-    description: "Gerar manifesto de resíduos",
-    icon: FileText,
-    color: "bg-blue-500 hover:bg-blue-600",
-    path: "/gestao-mtr"
-  },
-  {
     title: "Relatório ESG",
     description: "Visualizar indicadores",
     icon: Leaf,
     color: "bg-purple-500 hover:bg-purple-600",
     path: "/painel-esg"
+  },
+  {
+    title: "Emitir MTR",
+    description: "Gerar manifesto de resíduos",
+    icon: FileText,
+    color: "bg-blue-500 hover:bg-blue-600",
+    path: "/gestao-mtr"
   },
   {
     title: "Controle Financeiro",

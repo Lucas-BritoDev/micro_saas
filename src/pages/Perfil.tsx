@@ -259,8 +259,10 @@ export default function Perfil() {
 
   return (
     <div className="w-full max-w-3xl mx-auto px-2 sm:px-0 space-y-6">
-      <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-8">Meu Perfil</h1>
-      <p className="text-gray-600 mb-2 ml-1">Gerencie suas informações pessoais e configurações</p>
+      <div className="flex flex-col mb-4">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Meu Perfil</h1>
+        <p className="text-gray-600 mt-1">Gerencie suas informações pessoais e configurações</p>
+      </div>
       <Tabs value={tab} onValueChange={setTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-1 mb-4 bg-gray-50 rounded-xl shadow-sm">
           <TabsTrigger value="perfil" className="text-xs sm:text-sm py-2 px-1 sm:px-3">Perfil</TabsTrigger>
