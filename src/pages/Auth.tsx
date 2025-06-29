@@ -290,6 +290,14 @@ export default function Auth() {
             </TabsContent>
             
             <TabsContent value="signup">
+              <Button
+                variant="ghost"
+                onClick={() => navigate(-1)}
+                className="w-fit mb-4"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Voltar
+              </Button>
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
