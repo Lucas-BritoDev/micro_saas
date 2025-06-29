@@ -240,24 +240,24 @@ export default function Suporte() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-2 mb-4">
+      <div className="flex flex-col gap-2 mb-4 text-center">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Central de Suporte</h1>
         <p className="text-gray-600 mt-1">Tire suas dúvidas e solicite ajuda</p>
-        <div className="flex flex-col gap-2 w-full mt-2">
-          <Button variant="outline" className="w-full flex items-center justify-center" onClick={() => setActiveTab('contato-direto')}>
+        <div className="flex flex-col gap-2 w-full mt-2 text-center">
+          <Button variant="outline" className="w-full flex items-center justify-center text-center" onClick={() => setActiveTab('contato-direto')}>
             <Phone className="h-4 w-4 mr-2" /> Contato
           </Button>
-          <Button className="w-full flex items-center justify-center" onClick={() => setActiveTab('abrir-chamado')}>
+          <Button className="w-full flex items-center justify-center text-center" onClick={() => setActiveTab('abrir-chamado')}>
             <MessageSquare className="h-4 w-4 mr-2" /> Novo Chamado
           </Button>
-          <Button variant="destructive" onClick={handleZerarChamados} className="w-full flex items-center justify-center">
+          <Button variant="destructive" onClick={handleZerarChamados} className="w-full flex items-center justify-center text-center">
             Zerar Chamados
           </Button>
         </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-1">
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-1 text-center">
           <TabsTrigger value="perguntas-frequentes" className="text-xs sm:text-sm py-2 px-1 sm:px-3">
             <div className="flex flex-col items-center space-y-1">
               <HelpCircle className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -401,11 +401,11 @@ export default function Suporte() {
         <TabsContent value="meus-chamados" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Meus Chamados</CardTitle>
-              <CardDescription>Acompanhe o status dos seus chamados</CardDescription>
+              <CardTitle className="flex items-center text-center">Meus Chamados</CardTitle>
+              <CardDescription className="text-center">Acompanhe o status dos seus chamados</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="mb-4 flex gap-2 items-center">
+              <div className="mb-4 flex gap-2 items-center text-center">
                 <label>Status:</label>
                 <select value={statusFiltro} onChange={e => setStatusFiltro(e.target.value)} className="border rounded px-2 py-1">
                   <option value="todos">Todos</option>

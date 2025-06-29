@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme, ThemeType } from '@/hooks/useTheme';
 
 export default function Perfil() {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [tab, setTab] = useState('perfil');
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
@@ -60,6 +60,18 @@ export default function Perfil() {
           company: data.company || '',
           avatar_url: data.avatar_url || '',
           role: data.role || '',
+        });
+        setNotificacoes({
+          notification_email: !!data.notification_email,
+          notification_sms: !!data.notification_sms,
+          notification_push: !!data.notification_push,
+          notification_due_alerts: !!data.notification_due_alerts,
+          notification_weekly_report: !!data.notification_weekly_report,
+        });
+        setPreferencias({
+          language: data.language || 'Português (Brasil)',
+          timezone: data.timezone || 'Brasília (GMT-3)',
+          theme: data.theme || 'claro',
         });
       }
     };
@@ -146,6 +158,13 @@ export default function Perfil() {
       })
       .eq('id', user.id);
     if (!error) {
+      setUser((prev) => prev ? {
+        ...prev,
+        full_name: perfil.full_name,
+        avatar_url: perfil.avatar_url,
+        company: perfil.company,
+        role: perfil.role,
+      } : prev);
       toast({ title: 'Perfil atualizado', description: 'Suas informações foram salvas com sucesso.' });
     } else {
       toast({ title: 'Erro ao salvar', description: error.message, variant: 'destructive' });
@@ -165,6 +184,7 @@ export default function Perfil() {
     try {
       const { error } = await supabase.auth.updateUser({ password: novaSenha });
       if (!error) {
+        setUser((prev) => prev ? { ...prev, updated_at: new Date().toISOString() } : prev);
         toast({ title: 'Senha alterada', description: 'Sua senha foi alterada com sucesso.' });
         setSenhaAtual(''); setNovaSenha(''); setConfirmarSenha('');
       } else {
@@ -189,6 +209,7 @@ export default function Perfil() {
       })
       .eq('id', user.id);
     if (!error) {
+      setUser((prev) => prev ? { ...prev, updated_at: new Date().toISOString() } : prev);
       toast({ title: 'Preferências salvas', description: 'Suas preferências de notificação foram salvas.' });
     } else {
       toast({ title: 'Erro ao salvar', description: error.message, variant: 'destructive' });
@@ -208,7 +229,14 @@ export default function Perfil() {
       .eq('id', user.id);
     if (!error) {
       localStorage.setItem('theme', preferencias.theme);
+      setPreferencias(prev => ({
+        ...prev,
+        language: preferencias.language,
+        timezone: preferencias.timezone,
+        theme: preferencias.theme,
+      }));
       useTheme(preferencias.theme as ThemeType);
+      setUser((prev) => prev ? { ...prev, updated_at: new Date().toISOString() } : prev);
       toast({ title: 'Preferências salvas', description: 'Suas preferências de uso foram salvas.' });
     } else {
       toast({ title: 'Erro ao salvar', description: error.message, variant: 'destructive' });
@@ -258,13 +286,13 @@ export default function Perfil() {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-2 sm:px-0 space-y-6">
-      <div className="flex flex-col mb-4">
+    <div className="w-full max-w-3xl mx-auto px-2 sm:px-0 space-y-6 text-center">
+      <div className="flex flex-col mb-4 text-center">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Meu Perfil</h1>
         <p className="text-gray-600 mt-1">Gerencie suas informações pessoais e configurações</p>
       </div>
-      <Tabs value={tab} onValueChange={setTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-1 mb-4 bg-gray-50 rounded-xl shadow-sm">
+      <Tabs value={tab} onValueChange={setTab} className="w-full text-center">
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-1 mb-4 bg-gray-50 rounded-xl shadow-sm text-center">
           <TabsTrigger value="perfil" className="text-xs sm:text-sm py-2 px-1 sm:px-3">Perfil</TabsTrigger>
           <TabsTrigger value="seguranca" className="text-xs sm:text-sm py-2 px-1 sm:px-3">Segurança</TabsTrigger>
           <TabsTrigger value="notificacoes" className="text-xs sm:text-sm py-2 px-1 sm:px-3">Notificações</TabsTrigger>
@@ -273,9 +301,9 @@ export default function Perfil() {
         
         <TabsContent value="perfil">
           <Card>
-            <CardHeader>
-              <CardTitle>Informações Pessoais</CardTitle>
-              <CardDescription>Atualize suas informações pessoais</CardDescription>
+            <CardHeader className="text-center">
+              <CardTitle className="text-center">Informações Pessoais</CardTitle>
+              <CardDescription className="text-center">Atualize suas informações pessoais</CardDescription>
             </CardHeader>
             <CardContent>
               <form className="grid grid-cols-1 sm:grid-cols-2 gap-4" onSubmit={handleSalvarPerfil}>
@@ -305,9 +333,9 @@ export default function Perfil() {
 
         <TabsContent value="seguranca">
           <Card>
-            <CardHeader>
-              <CardTitle>Segurança</CardTitle>
-              <CardDescription>Gerencie a segurança da sua conta</CardDescription>
+            <CardHeader className="text-center">
+              <CardTitle className="text-center">Segurança</CardTitle>
+              <CardDescription className="text-center">Gerencie a segurança da sua conta</CardDescription>
             </CardHeader>
             <CardContent>
               <form className="space-y-4" onSubmit={handleAlterarSenha}>
@@ -331,9 +359,9 @@ export default function Perfil() {
 
         <TabsContent value="notificacoes">
           <Card>
-            <CardHeader>
-              <CardTitle>Notificações</CardTitle>
-              <CardDescription>Configure suas preferências de notificação</CardDescription>
+            <CardHeader className="text-center">
+              <CardTitle className="text-center">Notificações</CardTitle>
+              <CardDescription className="text-center">Configure suas preferências de notificação</CardDescription>
             </CardHeader>
             <CardContent>
               <form className="space-y-4" onSubmit={handleSalvarNotificacoes}>
@@ -392,9 +420,9 @@ export default function Perfil() {
 
         <TabsContent value="preferencias">
           <Card>
-            <CardHeader>
-              <CardTitle>Preferências do Sistema</CardTitle>
-              <CardDescription>Configure suas preferências de uso</CardDescription>
+            <CardHeader className="text-center">
+              <CardTitle className="text-center">Preferências do Sistema</CardTitle>
+              <CardDescription className="text-center">Configure suas preferências de uso</CardDescription>
             </CardHeader>
             <CardContent>
               <form className="space-y-4" onSubmit={handleSalvarPreferencias}>

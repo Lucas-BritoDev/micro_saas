@@ -706,17 +706,17 @@ export default function CalculadoraIMC() {
   };
 
   return (
-    <div id="imc-main-container" className="space-y-6">
+    <div id="imc-main-container" className="space-y-6 text-center">
       {/* Header principal */}
-      <div className="flex flex-col gap-2 mb-4">
+      <div className="flex flex-col gap-2 mb-4 text-center">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Calculadora IMC</h1>
         <p className="text-gray-600 mt-1">Índice de Maturidade Circular</p>
         {assessment && (
-          <div className="flex flex-col gap-2 w-full mt-2">
-            <Button onClick={handleExportReport} className="w-full flex items-center justify-center">
+          <div className="flex flex-col gap-2 w-full mt-2 text-center">
+            <Button onClick={handleExportReport} className="w-full flex items-center justify-center text-center">
               <Download className="h-4 w-4 mr-2" /> Exportar
             </Button>
-            <Button className="bg-green-600 hover:bg-green-700 w-full flex items-center justify-center" onClick={handleScheduleConsulting}>
+            <Button className="bg-green-600 hover:bg-green-700 w-full flex items-center justify-center text-center" onClick={handleScheduleConsulting}>
               <Calendar className="h-4 w-4 mr-2" /> Agendar Consultoria
             </Button>
           </div>
@@ -765,7 +765,7 @@ export default function CalculadoraIMC() {
       </div>
 
       {/* Navegação entre grupos */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between space-y-3 sm:space-y-0 sm:space-x-4">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between space-y-3 sm:space-y-0 sm:space-x-4 text-center">
         <Button
           variant="outline"
           onClick={handlePreviousGroup}
@@ -854,24 +854,24 @@ export default function CalculadoraIMC() {
 
       {/* Histórico de Avaliações */}
       {history.length > 0 && (
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold">Histórico de Avaliações IMC</h2>
-            <Button variant="destructive" onClick={handleDeleteAllIMC} className="flex items-center gap-2">
+        <div className="mb-8 text-center">
+          <div className="flex items-center justify-between mb-4 text-center">
+            <h2 className="text-xl font-bold text-center">Histórico de Avaliações IMC</h2>
+            <Button variant="destructive" onClick={handleDeleteAllIMC} className="flex items-center gap-2 text-center">
               <Trash2 className="h-4 w-4" /> Zerar Relatórios
             </Button>
           </div>
-          <div className="mb-4 flex flex-col sm:flex-row sm:items-center gap-2">
+          <div className="mb-4 flex flex-col sm:flex-row sm:items-center gap-2 text-center">
             <label className="font-medium text-sm">Filtrar por data:</label>
             <input
               type="date"
               value={filterDate}
               onChange={e => setFilterDate(e.target.value)}
-              className="border rounded px-2 py-1 text-sm"
+              className="border rounded px-2 py-1 text-sm text-center"
               max={new Date().toISOString().slice(0, 10)}
             />
             {filterDate && (
-              <Button variant="outline" size="sm" onClick={() => setFilterDate('')}>Limpar filtro</Button>
+              <Button variant="outline" size="sm" onClick={() => setFilterDate('')} className="text-center">Limpar filtro</Button>
             )}
           </div>
           {filteredHistory.length === 0 ? (

@@ -158,24 +158,24 @@ export default function Financeiro() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-2 mb-4">
+      <div className="flex flex-col gap-2 mb-4 text-center">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Painel Financeiro</h1>
         <p className="text-gray-600 mt-1">Controle financeiro por projeto</p>
         <div className="flex flex-col gap-2 w-full mt-2">
-          <Button variant="outline" onClick={handleExport} className="w-full flex items-center justify-center">
+          <Button variant="outline" onClick={handleExport} className="w-full flex items-center justify-center text-center">
             <Download className="h-4 w-4 mr-2" /> Exportar
           </Button>
-          <Button className="bg-green-600 hover:bg-green-700 w-full flex items-center justify-center" onClick={() => setShowNewTransactionDialog(true)}>
+          <Button className="bg-green-600 hover:bg-green-700 w-full flex items-center justify-center text-center" onClick={() => setShowNewTransactionDialog(true)}>
             <Plus className="h-4 w-4 mr-2" /> Nova Transação
           </Button>
-          <Button variant="destructive" onClick={handleDeleteAllFinance} className="w-full flex items-center justify-center">
+          <Button variant="destructive" onClick={handleDeleteAllFinance} className="w-full flex items-center justify-center text-center">
             <Trash2 className="h-4 w-4 mr-2" /> Zerar Lançamentos
           </Button>
         </div>
       </div>
 
       {/* Financial Summary Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 text-center">
         <Card className="bg-green-50 border-green-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-green-800">Total Receitas</CardTitle>
@@ -216,7 +216,7 @@ export default function Financeiro() {
       {/* Filtros avançados */}
       <Card className="mb-4">
         <CardContent>
-          <div className="flex flex-wrap gap-4 items-end">
+          <div className="flex flex-wrap gap-4 items-end justify-center text-center">
             <div>
               <Label>Período</Label>
               <select value={filter.period} onChange={e => setFilter(f => ({ ...f, period: e.target.value }))} className="border rounded px-2 py-1">
@@ -360,8 +360,8 @@ export default function Financeiro() {
       {/* Tabela detalhada de transações */}
       <Card>
         <CardHeader>
-          <CardTitle>Transações Detalhadas</CardTitle>
-          <CardDescription>Todos os campos e filtros aplicados</CardDescription>
+          <CardTitle className="text-center">Transações Detalhadas</CardTitle>
+          <CardDescription className="text-center">Todos os campos e filtros aplicados</CardDescription>
         </CardHeader>
         <CardContent>
           {filteredTransactions.length === 0 ? (
@@ -371,7 +371,7 @@ export default function Financeiro() {
               <p className="text-sm">Ajuste os filtros ou clique em "Nova Transação" para começar</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto text-center">
               <table className="min-w-full text-sm border">
                 <thead>
                   <tr className="bg-gray-50">

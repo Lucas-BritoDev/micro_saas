@@ -24,50 +24,52 @@ interface Profile {
   avatar_url?: string;
 }
 
-export const UserMenu: React.FC = () => {
+export function UserMenu() {
   const { user, signOut } = useAuth();
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [perfil, setPerfil] = useState<{ full_name?: string } | null>(null);
   const [showNotificationsDialog, setShowNotificationsDialog] = useState(false);
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
-      fetchProfile();
+    async function fetchPerfil() {
+      if (user?.id) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('full_name')
+          .eq('id', user.id)
+          .single();
+        setPerfil(data);
+      }
     }
+    fetchPerfil();
   }, [user]);
-
-  const fetchProfile = async () => {
-    if (!user) return;
-    
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single();
-    
-    if (data) {
-      setProfile(data);
-    }
-  };
 
   const handleSignOut = async () => {
     await signOut();
   };
 
-  const getInitials = () => {
-    if (profile?.first_name && profile?.last_name) {
-      return `${profile.first_name[0]}${profile.last_name[0]}`.toUpperCase();
+  const nomeParaExibir = perfil?.full_name || user?.email || '';
+
+  function getInitials(fullName?: string) {
+    if (!fullName) return '';
+    const words = fullName.trim().split(' ').filter(Boolean);
+    const ignore = ['de', 'da', 'do', 'das', 'dos', 'e'];
+    if (words.length === 1) return words[0][0].toUpperCase();
+    const first = words[0][0];
+    let last = '';
+    for (let i = words.length - 1; i >= 0; i--) {
+      if (!ignore.includes(words[i].toLowerCase())) {
+        last = words[i][0];
+        break;
+      }
     }
-    if (user?.email) {
-      return user.email[0].toUpperCase();
-    }
-    return 'U';
-  };
+    return (first + last).toUpperCase();
+  }
 
   const getDisplayName = () => {
-    if (profile?.first_name && profile?.last_name) {
-      return `${profile.first_name} ${profile.last_name}`;
+    if (perfil?.first_name && perfil?.last_name) {
+      return `${perfil.first_name} ${perfil.last_name}`;
     }
     return user?.email || 'Usuário';
   };
@@ -76,17 +78,25 @@ export const UserMenu: React.FC = () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 border-2 border-blue-400 bg-blue-50 hover:bg-blue-100 shadow flex items-center justify-center p-0">
-            <span className="text-base font-bold text-blue-700 w-full h-full flex items-center justify-center">{getInitials()}</span>
+          <Button
+            variant="ghost"
+            className="relative h-10 w-10 rounded-full flex items-center justify-center text-center"
+            aria-label="Abrir menu do usuário"
+          >
+            <span className="font-bold text-lg text-center">
+              {getInitials(nomeParaExibir)}
+            </span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuContent align="end" className="w-56 text-center">
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">{getDisplayName()}</p>
-              <p className="text-xs leading-none text-muted-foreground">
+              <span className="text-sm font-semibold leading-none">
+                {nomeParaExibir}
+              </span>
+              <span className="text-xs text-muted-foreground">
                 {user?.email}
-              </p>
+              </span>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -103,4 +113,4 @@ export const UserMenu: React.FC = () => {
       </DropdownMenu>
     </>
   );
-};
+}

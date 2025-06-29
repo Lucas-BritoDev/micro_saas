@@ -183,18 +183,33 @@ export default function Dashboard() {
     }
   };
 
+  function getInitials(fullName) {
+    if (!fullName) return '';
+    const words = fullName.trim().split(' ').filter(Boolean);
+    const ignore = ['de', 'da', 'do', 'das', 'dos', 'e'];
+    const first = words[0][0];
+    let last = '';
+    for (let i = words.length - 1; i >= 0; i--) {
+      if (!ignore.includes(words[i].toLowerCase())) {
+        last = words[i][0];
+        break;
+      }
+    }
+    return (first + last).toUpperCase();
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-2 mb-4">
+      <div className="flex flex-col gap-2 mb-4 text-center">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-gray-600 mt-1">Visão geral do seu canteiro sustentável</p>
         <div className="flex flex-col gap-2 w-full mt-2">
-          <Button onClick={handleExport} className="w-full flex items-center justify-center">
+          <Button onClick={handleExport} className="w-full flex items-center justify-center text-center">
             <Download className="h-4 w-4 mr-2" /> Exportar
           </Button>
           <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full text-center">
               <SelectValue placeholder="Período" />
             </SelectTrigger>
             <SelectContent>
@@ -206,7 +221,7 @@ export default function Dashboard() {
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 text-center">
         <MetricCard
           title="Score IMC"
           value={imcScore}

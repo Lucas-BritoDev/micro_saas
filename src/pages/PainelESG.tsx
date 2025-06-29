@@ -237,24 +237,24 @@ export default function PainelESG() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col mb-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-2"><Leaf className="text-green-600" /> Painel ESG</h1>
+      <div className="flex flex-col mb-4 text-center">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-2 justify-center"><Leaf className="text-green-600" /> Painel ESG</h1>
         <p className="text-gray-600 mt-1">Environmental, Social & Governance</p>
         <div className="flex flex-col gap-2 w-full mt-2">
-          <Button variant="outline" onClick={handleExportESG} className="w-full flex items-center justify-center">
+          <Button variant="outline" onClick={handleExportESG} className="w-full flex items-center justify-center text-center">
             <Download className="h-4 w-4 mr-2" /> Exportar
           </Button>
-          <Button onClick={() => setShowEsgForm(true)} className="w-full flex items-center justify-center">
+          <Button onClick={() => setShowEsgForm(true)} className="w-full flex items-center justify-center text-center">
             <Calculator className="h-4 w-4 mr-2" /> Calcular ESG
           </Button>
-          <Button variant="destructive" onClick={handleDeleteAllESG} className="w-full flex items-center justify-center">
+          <Button variant="destructive" onClick={handleDeleteAllESG} className="w-full flex items-center justify-center text-center">
             <Trash2 className="h-4 w-4 mr-2" /> Zerar Relatórios
           </Button>
         </div>
       </div>
-      <div className="bg-green-50 border border-green-200 rounded p-3 text-green-800 text-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <div className="bg-green-50 border border-green-200 rounded p-3 text-green-800 text-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-center">
         <span>Visualizando dados dos últimos {monthsFilter} relatórios</span>
-        <select value={monthsFilter} onChange={handleMonthsFilterChange} className="border rounded px-2 py-1 text-sm">
+        <select value={monthsFilter} onChange={handleMonthsFilterChange} className="border rounded px-2 py-1 text-sm text-center">
           <option value={3}>3 relatórios</option>
           <option value={6}>6 relatórios</option>
           <option value={9}>9 relatórios</option>
@@ -263,8 +263,8 @@ export default function PainelESG() {
       </div>
       {/* Novos cards: Último resultado ESG - agora acima do filtro */}
       <div className="mb-4">
-        <div className="font-semibold text-gray-700 mb-2">Dados do último cálculo ESG</div>
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div className="font-semibold text-gray-700 mb-2 text-center">Dados do último cálculo ESG</div>
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-center">
           <Card>
             <CardContent className="p-4 flex flex-col items-center">
               <span className="text-gray-500 text-xs mb-1">Último Score ESG</span>
@@ -302,7 +302,7 @@ export default function PainelESG() {
         </div>
       </div>
       {/* Cards ESG */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-center">
         {/* Card Score ESG - Média */}
         <Card>
           <CardContent className="p-4 flex flex-col items-center">
@@ -340,7 +340,7 @@ export default function PainelESG() {
         </Card>
       </div>
       {/* Gráficos ESG */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
         <Card>
           <CardHeader>
             <CardTitle>Evolução ESG</CardTitle>
@@ -383,16 +383,16 @@ export default function PainelESG() {
       </div>
       {/* Metas ESG */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle>Metas ESG</CardTitle>
+        <CardHeader className="flex flex-row items-center justify-between text-center">
+          <div className="w-full text-center">
+            <CardTitle className="text-center">Metas ESG</CardTitle>
           </div>
-          <Button size="sm" onClick={() => navigate('/nova-meta-esg')}>
+          <Button size="sm" onClick={() => navigate('/nova-meta-esg')} className="text-center">
             <Plus className="h-4 w-4 mr-1" /> Nova Meta
           </Button>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
             {goals.map(goal => (
               <div key={goal.id} className="bg-gray-50 rounded p-4 flex flex-col gap-3">
                 <div className="flex justify-between items-start">

@@ -128,24 +128,24 @@ export default function GestaoMTR() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col mb-4">
+      <div className="flex flex-col mb-4 text-center">
         <h1 className="text-2xl font-bold">Gestão de MTR</h1>
         <p className="text-gray-600 mt-1">Manifesto de Transporte de Resíduos</p>
         <div className="flex flex-col gap-2 w-full mt-2">
-          <Button variant="outline" onClick={handleExport} className="w-full flex items-center justify-center">
+          <Button variant="outline" onClick={handleExport} className="w-full flex items-center justify-center text-center">
             <Download className="h-4 w-4 mr-2" /> Exportar
           </Button>
-          <Button className="bg-green-600 hover:bg-green-700 w-full flex items-center justify-center" onClick={() => setShowNewMTRDialog(true)}>
+          <Button className="bg-green-600 hover:bg-green-700 w-full flex items-center justify-center text-center" onClick={() => setShowNewMTRDialog(true)}>
             <Plus className="h-4 w-4 mr-2" /> Novo MTR
           </Button>
-          <Button variant="destructive" onClick={handleDeleteAllMTR} className="w-full flex items-center justify-center">
+          <Button variant="destructive" onClick={handleDeleteAllMTR} className="w-full flex items-center justify-center text-center">
             <Trash2 className="h-4 w-4 mr-2" /> Zerar Relatórios
           </Button>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 text-center">
         {stats.map((stat, index) => (
           <Card key={index}>
             <CardContent className="p-4 text-center">
@@ -159,13 +159,13 @@ export default function GestaoMTR() {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center">
+          <CardTitle className="flex items-center text-center">
             <Search className="h-5 w-5 mr-2" />
             Filtros de Busca
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
             <div>
               <Input
                 placeholder="Buscar por número MTR ou projeto..."
@@ -232,7 +232,7 @@ export default function GestaoMTR() {
       <div className="space-y-4">
         {filteredData.map((mtr) => (
           <Card key={mtr.id} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
+            <CardContent className="p-6 text-center">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center space-x-3">

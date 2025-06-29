@@ -110,25 +110,19 @@ export default function NovaMetaESG() {
   const targetGovernance = calculateTargetScore(currentScores.governance, metaForm.governance);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4 mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-2">
-          <Target className="text-green-600" />
-          Nova Meta ESG
-        </h1>
+    <div className="w-full max-w-2xl mx-auto px-2 sm:px-0 space-y-6 text-center">
+      <div className="flex flex-col mb-4 text-center">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Nova Meta ESG</h1>
+        <p className="text-gray-600 mt-1">Defina uma nova meta de sustentabilidade</p>
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Formulário */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Definir Nova Meta</CardTitle>
-            <CardDescription>
-              Configure suas metas de melhoria para cada quesito ESG
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle className="text-center">Informações da Meta</CardTitle>
+          <CardDescription className="text-center">Preencha os campos abaixo para criar uma nova meta ESG</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4 text-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
               <div>
                 <Label htmlFor="title">Título da Meta (opcional)</Label>
                 <Input
@@ -241,10 +235,12 @@ export default function NovaMetaESG() {
                   </div>
                 )}
               </Button>
-            </form>
-          </CardContent>
-        </Card>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
 
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Resumo */}
         <Card>
           <CardHeader>

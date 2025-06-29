@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft, Building2, HardHat, Leaf, ShieldCheck, Users } from 'lucide-react';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
@@ -175,26 +175,29 @@ export default function Auth() {
 
   if (showReset) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen flex items-center justify-center px-4" style={{
+        background: 'linear-gradient(135deg, #1e3a8a 0%, #1e3a8a 50%, #fb923c 50%, #fb923c 100%)'
+      }}>
+        <Card className="w-full max-w-md shadow-2xl rounded-2xl bg-white/80 backdrop-blur-md border-0">
           <CardHeader className="text-center">
             <Button
               variant="ghost"
               onClick={() => setShowReset(false)}
-              className="w-fit mb-4"
+              className="w-fit mb-4 mx-auto"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Voltar
             </Button>
-            <CardTitle className="text-2xl font-bold text-green-600">
-              Recuperar Senha
-            </CardTitle>
-            <CardDescription>
+            <div className="flex flex-col items-center mb-2">
+              <ShieldCheck className="h-10 w-10 text-green-600 mb-2" />
+              <CardTitle className="text-2xl font-bold text-green-700">Recuperar Senha</CardTitle>
+            </div>
+            <CardDescription className="text-center text-gray-700">
               Digite seu email para receber as instruções de recuperação
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleResetPassword} className="space-y-4">
+            <form onSubmit={handleResetPassword} className="space-y-4 text-center">
               <div>
                 <Label htmlFor="reset-email">Email</Label>
                 <Input
@@ -203,9 +206,14 @@ export default function Auth() {
                   value={resetEmail}
                   onChange={(e) => setResetEmail(e.target.value)}
                   required
+                  className="text-center"
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button
+                type="submit"
+                className="w-full max-w-xs mx-auto bg-gradient-to-r from-orange-400 to-blue-500 hover:from-orange-500 hover:to-blue-600 text-white font-bold shadow-md rounded-xl py-3 text-center text-base transition-all block flex justify-center items-center"
+                disabled={loading}
+              >
                 {loading ? "Enviando..." : "Enviar Email de Recuperação"}
               </Button>
             </form>
@@ -216,32 +224,30 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="mx-auto mb-4">
-            <img 
-              src={`${import.meta.env.BASE_URL}lovable-uploads/logo.png`} 
-              alt="Canteiro Circular" 
-              className="h-16 w-auto mx-auto"
-            />
+    <div className="min-h-screen flex items-center justify-center px-2 py-6" style={{
+      background: 'linear-gradient(135deg, #1e3a8a 0%, #1e3a8a 50%, #fb923c 50%, #fb923c 100%)'
+    }}>
+      <Card className="w-full max-w-md shadow-2xl rounded-2xl bg-white/80 backdrop-blur-md border-0">
+        <CardHeader className="text-center flex flex-col items-center gap-2">
+          <div className="mx-auto mb-2 flex flex-col items-center gap-2">
+            <div className="flex items-center gap-2">
+              <HardHat className="h-10 w-10 text-yellow-500" />
+              <Building2 className="h-10 w-10 text-blue-600" />
+              <Leaf className="h-10 w-10 text-green-600" />
+            </div>
+            <CardTitle className="text-3xl font-extrabold text-gray-900 tracking-tight">Canteiro Circular</CardTitle>
+            <CardDescription className="text-base text-gray-700 font-medium">Plataforma para gestão sustentável da construção civil</CardDescription>
+            <span className="text-xs text-blue-700 font-semibold mt-1">Tecnologia, Sustentabilidade e Segurança para o seu canteiro de obras</span>
           </div>
-          <CardTitle className="text-2xl font-bold text-green-600">
-            Canteiro Circular
-          </CardTitle>
-          <CardDescription>
-            Plataforma ESG para Construção Civil
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Entrar</TabsTrigger>
-              <TabsTrigger value="signup">Cadastrar</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 mb-4 rounded-xl bg-blue-50">
+              <TabsTrigger value="signin" className="text-center font-bold">Entrar</TabsTrigger>
+              <TabsTrigger value="signup" className="text-center font-bold">Cadastrar</TabsTrigger>
             </TabsList>
-            
             <TabsContent value="signin">
-              <form onSubmit={handleSignIn} className="space-y-4">
+              <form onSubmit={handleSignIn} className="space-y-4 text-center">
                 <div>
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -250,6 +256,7 @@ export default function Auth() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    className="text-center"
                   />
                 </div>
                 <div>
@@ -261,6 +268,7 @@ export default function Auth() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
+                      className="text-center"
                     />
                     <Button
                       type="button"
@@ -273,24 +281,25 @@ export default function Auth() {
                     </Button>
                   </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <Button
-                    type="button"
-                    variant="link"
-                    className="p-0 text-sm"
-                    onClick={() => setShowReset(true)}
-                  >
-                    Esqueci minha senha
-                  </Button>
-                </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button
+                  type="submit"
+                  className="w-full max-w-xs mx-auto bg-gradient-to-r from-orange-400 to-blue-500 hover:from-orange-500 hover:to-blue-600 text-white font-bold shadow-md rounded-xl py-3 text-center text-base transition-all block flex justify-center items-center mt-4"
+                  disabled={loading}
+                >
                   {loading ? "Entrando..." : "Entrar"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="block mx-auto mt-2 text-blue-700 font-semibold bg-white/80 rounded-xl shadow-sm px-4 py-2 text-center hover:bg-blue-50 transition-all"
+                  onClick={() => setShowReset(true)}
+                >
+                  Esqueci minha senha
                 </Button>
               </form>
             </TabsContent>
-            
             <TabsContent value="signup">
-              <form onSubmit={handleSignUp} className="space-y-4">
+              <form onSubmit={handleSignUp} className="space-y-4 text-center">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="firstName">Nome</Label>
@@ -299,6 +308,7 @@ export default function Auth() {
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       required
+                      className="text-center"
                     />
                   </div>
                   <div>
@@ -308,6 +318,7 @@ export default function Auth() {
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       required
+                      className="text-center"
                     />
                   </div>
                 </div>
@@ -317,6 +328,7 @@ export default function Auth() {
                     id="company"
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
+                    className="text-center"
                   />
                 </div>
                 <div>
@@ -325,6 +337,7 @@ export default function Auth() {
                     id="phone"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
+                    className="text-center"
                   />
                 </div>
                 <div>
@@ -335,6 +348,7 @@ export default function Auth() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    className="text-center"
                   />
                 </div>
                 <div>
@@ -347,6 +361,7 @@ export default function Auth() {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       minLength={6}
+                      className="text-center"
                     />
                     <Button
                       type="button"
@@ -368,14 +383,26 @@ export default function Auth() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                     minLength={6}
+                    className="text-center"
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button
+                  type="submit"
+                  className="w-full max-w-xs mx-auto bg-gradient-to-r from-orange-400 to-blue-500 hover:from-orange-500 hover:to-blue-600 text-white font-bold shadow-md rounded-xl py-3 text-center text-base transition-all block flex justify-center items-center"
+                  disabled={loading}
+                >
                   {loading ? "Cadastrando..." : "Cadastrar"}
                 </Button>
               </form>
             </TabsContent>
           </Tabs>
+          <div className="mt-6 text-center text-xs text-gray-500">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Users className="h-4 w-4 text-blue-600" />
+              <span>Feito para engenheiros, técnicos e profissionais do canteiro de obras</span>
+            </div>
+            <span className="block italic text-green-700 font-medium">"Construa o futuro com responsabilidade, tecnologia e sustentabilidade."</span>
+          </div>
         </CardContent>
       </Card>
     </div>
