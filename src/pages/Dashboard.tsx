@@ -50,10 +50,8 @@ export default function Dashboard() {
           .order('created_at', { ascending: false })
           .limit(1)
           .single();
-
         console.log('Último IMC:', data);
-
-        if (!error && data && typeof data === 'object' && data.total_score !== undefined) {
+        if (!error && data && 'total_score' in data && data.total_score !== undefined) {
           setImcScore(`${data.total_score}/100`);
         } else {
           setImcScore("0/100");
@@ -183,7 +181,6 @@ export default function Dashboard() {
         imcScore,
         imcAverage,
         activeMTRs,
-        expiredMTRs,
         esgScore,
         esgAverage,
         monthlyRevenue,

@@ -689,65 +689,21 @@ export default function CalculadoraIMC() {
     : history;
 
   const handleDeleteAllIMC = async () => {
-    if (!user) return;
-    if (!window.confirm('Tem certeza que deseja excluir TODOS os relatórios IMC? Esta ação não pode ser desfeita.')) return;
-    const { error } = await supabase.from('sustainability_metrics').delete().eq('user_id', user.id);
-    if (!error) {
-      setHistory([]);
-      toast.success('Todos os relatórios IMC foram excluídos!');
-    } else {
-      toast.error('Erro ao excluir relatórios: ' + error.message);
-    }
-  };
-
-  // No seu SaaS, você pode escutar o evento de autenticação
-  window.addEventListener('mobileAppAuth', function(event) {
-    const userData = event.detail;
-    console.log('Usuário autenticado via mobile:', userData);
-    // Faça login automático com os dados recebidos
-    // Seu código de autenticação aqui...
-  });
-
-  // Para solicitar logout do app
-  window.requestLogout = function() {
-    if (window.ReactNativeWebView) {
-      window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'LOGOUT_REQUEST' }));
-    }
-  };
-
-  // Para enviar dados para o app
-  window.sendToMobileApp = function(type, data) {
-    if (window.ReactNativeWebView) {
-      window.ReactNativeWebView.postMessage(JSON.stringify({ type, data }));
-    }
-  };
-
-  // Adiciona suporte ao logout remoto via mensagem do app mobile
-  window.addEventListener('message', function(event) {
-    try {
-      const message = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-      if (message.type === 'LOGOUT') {
-        // Limpa dados locais
-        localStorage.clear();
-        sessionStorage.clear();
-        // Se usar Supabase Auth, faz logout também
-        if (window.supabase && window.supabase.auth) {
-          window.supabase.auth.signOut();
-        }
-        // Redireciona para tela de login
-        window.location.href = '/#/auth';
-        // Notifica o app que o logout foi feito
-        if (window.ReactNativeWebView) {
-          window.ReactNativeWebView.postMessage(JSON.stringify({
-            type: 'LOGOUT_SUCCESS',
-            data: { message: 'Logout realizado no SaaS' }
-          }));
-        }
+    if (confirm('Tem certeza que deseja excluir todo o histórico de avaliações IMC?')) {
+      try {
+        await supabase
+          .from('sustainability_metrics')
+          .delete()
+          .eq('user_id', user?.id);
+        
+        setHistory([]);
+        toast.success('Todo o histórico de avaliações IMC foi excluído com sucesso.');
+      } catch (error) {
+        console.error('Erro ao excluir histórico:', error);
+        toast.error('Erro ao excluir histórico de avaliações.');
       }
-    } catch (e) {
-      // Ignora erros de parsing
     }
-  });
+  };
 
   return (
     <div id="imc-main-container" className="space-y-6">
@@ -755,7 +711,7 @@ export default function CalculadoraIMC() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Calculadora IMC</h1>
-          <p className="text-gray-600 mt-1">Índice de Maturidade de Construção</p>
+          <p className="text-gray-600 mt-1">Índice de Maturidade Circular</p>
         </div>
         {assessment && (
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">

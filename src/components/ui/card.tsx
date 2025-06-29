@@ -16,7 +16,7 @@ Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  React.HTMLAttributes<HTMLDivElement> & { variant?: 'default' | 'blue' | 'orange' }
 >(({ className, variant = 'default', ...props }, ref) => {
   let color = '';
   if (variant === 'blue') color = 'bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-t-xl p-4';

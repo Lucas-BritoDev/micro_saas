@@ -446,6 +446,45 @@ export type Database = {
           created_at?: string;
         }
         Relationships: []
+      },
+      support_tickets: {
+        Row: {
+          id: string;
+          user_id: string;
+          subject: string;
+          description: string;
+          category: string;
+          status: string;
+          priority: string;
+          assigned_to: string | null;
+          created_at: string;
+          updated_at: string;
+        }
+        Insert: {
+          id?: string;
+          user_id: string;
+          subject: string;
+          description: string;
+          category: string;
+          status?: string;
+          priority?: string;
+          assigned_to?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        }
+        Update: {
+          id?: string;
+          user_id?: string;
+          subject?: string;
+          description?: string;
+          category?: string;
+          status?: string;
+          priority?: string;
+          assigned_to?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        }
+        Relationships: []
       }
     }
     Views: {

@@ -86,7 +86,7 @@ export default function PainelESG() {
     setLoading(false);
   }
 
-  function handleEsgFormChange(e, idx) {
+  function handleEsgFormChange(e) {
     if (e.target.name.startsWith('waste-')) {
       const i = parseInt(e.target.name.split('-')[1]);
       const field = e.target.name.split('-')[2];
@@ -114,6 +114,9 @@ export default function PainelESG() {
       environmental_score: Number(esgForm.environmental),
       social_score: Number(esgForm.social),
       governance_score: Number(esgForm.governance),
+      environmental_change: 0,
+      social_change: 0,
+      governance_change: 0,
       created_at: now,
     };
     await supabase.from('esg_scores').insert(insertObj);
@@ -376,11 +379,27 @@ export default function PainelESG() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <Label>Ambiental (E)</Label>
-                  <Input name="environmental" type="number" min={0} max={100} value={esgForm.environmental} onChange={handleEsgFormChange} required />
+                  <Input 
+                    name="environmental" 
+                    type="number" 
+                    min={0} 
+                    max={100} 
+                    value={esgForm.environmental} 
+                    onChange={handleEsgFormChange} 
+                    required 
+                  />
                 </div>
                 <div>
                   <Label>Social (S)</Label>
-                  <Input name="social" type="number" min={0} max={100} value={esgForm.social} onChange={handleEsgFormChange} required />
+                  <Input 
+                    name="social" 
+                    type="number" 
+                    min={0} 
+                    max={100} 
+                    value={esgForm.social} 
+                    onChange={handleEsgFormChange} 
+                    required 
+                  />
                 </div>
                 <div>
                   <Label>Governança (G)</Label>
@@ -391,8 +410,8 @@ export default function PainelESG() {
                 <Label>Distribuição de Resíduos (%)</Label>
                 {esgForm.waste.map((w, idx) => (
                   <div key={idx} className="flex gap-2 mb-2">
-                    <Input name={`waste-${idx}-name`} value={w.name} onChange={(e) => handleEsgFormChange(e, idx)} />
-                    <Input name={`waste-${idx}-value`} type="number" min={0} max={100} value={w.value} onChange={(e) => handleEsgFormChange(e, idx)} />
+                    <Input name={`waste-${idx}-name`} value={w.name} onChange={handleEsgFormChange} />
+                    <Input name={`waste-${idx}-value`} type="number" min={0} max={100} value={w.value} onChange={handleEsgFormChange} />
                   </div>
                 ))}
                 <Button type="button" onClick={addWasteField} className="w-full mt-2">Adicionar Resíduo</Button>

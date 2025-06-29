@@ -20,7 +20,6 @@ export default function Perfil() {
   const [perfil, setPerfil] = useState({
     full_name: '',
     company: '',
-    phone: '',
     avatar_url: '',
     role: '',
   });
@@ -59,7 +58,6 @@ export default function Perfil() {
         setPerfil({
           full_name: data.full_name || '',
           company: data.company || '',
-          phone: data.phone || '',
           avatar_url: data.avatar_url || '',
           role: data.role || '',
         });
@@ -114,7 +112,7 @@ export default function Perfil() {
       }
       // Chamados
       const { data: chamados, error: chamadosError } = await supabase
-        .from('support_tickets')
+        .from('consulting_appointments')
         .select('created_at, status')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
@@ -142,7 +140,6 @@ export default function Perfil() {
       .update({
         full_name: perfil.full_name,
         company: perfil.company,
-        phone: perfil.phone,
         avatar_url: perfil.avatar_url,
         role: perfil.role,
         updated_at: new Date().toISOString(),
@@ -242,7 +239,7 @@ export default function Perfil() {
     await supabase.from('esg_scores').delete().eq('user_id', user.id);
     await supabase.from('mtr_records').delete().eq('user_id', user.id);
     await supabase.from('financial_transactions').delete().eq('user_id', user.id);
-    await supabase.from('support_tickets').delete().eq('user_id', user.id);
+    // Removendo a linha problemática com support_tickets que não existe no schema
     // Deslogar usuário
     await supabase.auth.signOut();
     toast({ title: 'Conta excluída', description: 'Sua conta foi excluída com sucesso.' });
@@ -287,10 +284,6 @@ export default function Perfil() {
                 <div>
                   <Label htmlFor="empresa">Empresa</Label>
                   <Input id="empresa" name="company" value={perfil.company} onChange={handlePerfilChange} placeholder="Nome da Empresa" />
-                </div>
-                <div>
-                  <Label htmlFor="telefone">Telefone</Label>
-                  <Input id="telefone" name="phone" value={perfil.phone} onChange={handlePerfilChange} placeholder="(11) 99999-9999" />
                 </div>
                 <div>
                   <Label htmlFor="avatar_url">Avatar URL</Label>

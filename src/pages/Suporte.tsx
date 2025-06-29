@@ -156,7 +156,7 @@ export default function Suporte() {
       return;
     }
     // Montar objeto apenas com campos válidos
-    const chamado = {
+    const chamado: any = {
       user_id: user.id,
       subject: novoChamado.subject,
       description: novoChamado.description,
@@ -185,7 +185,17 @@ export default function Suporte() {
   };
 
   const handleStatusChamado = async (id: string, novoStatus: string) => {
-    await supabase.from('support_tickets').update({ status: novoStatus }).eq('id', id);
+    const { error } = await supabase
+      .from('support_tickets')
+      .update({ status: novoStatus })
+      .eq('id', id);
+    
+    if (error) {
+      toast.error('Erro ao atualizar status do chamado');
+      console.error('Erro Supabase:', error);
+      return;
+    }
+    
     setChamados(chamados.map(c => c.id === id ? { ...c, status: novoStatus } : c));
     toast.success('Status do chamado atualizado!');
   };
